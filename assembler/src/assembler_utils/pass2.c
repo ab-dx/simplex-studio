@@ -85,7 +85,7 @@ void pass_2(AssemblerContext *ctx, FILE *output_obj_file,
   for (int i = 0; i < ctx->sym_count;
        i++) { // For each label in the symbol table
     if (!(ctx->sym_table[i].used)) {
-      printf("WARNING: Unused symbol %s\n", ctx->sym_table[i].name);
+      fprintf(stderr, "WARNING: Unused symbol %s\n", ctx->sym_table[i].name);
     }
   }
   if (ctx->has_error) {

@@ -41,7 +41,8 @@ void process_lines(AssemblerContext *ctx, FILE *input_file,
 }
 
 void parse_line(AssemblerContext *ctx, char *buffer) {
-  printf("%s\n", buffer);
+  if (!ctx->io_mode)
+    printf("%s\n", buffer);
 
   char original_line[1024];
   int symbol_found = 0;     // Toggled for label found in line
@@ -182,8 +183,9 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
 
   ctx->line_count = ctx->line_count + 1;
 
-  printf("Label: '%s'\nMnemonic: '%s'\nImmediate: '%s'\n", label, mnemonic_ptr,
-         imm_ptr);
+  if (!ctx->io_mode)
+    printf("Label: '%s'\nMnemonic: '%s'\nImmediate: '%s'\n", label,
+           mnemonic_ptr, imm_ptr);
 }
 
 void pass_1(AssemblerContext *ctx, FILE *input_file) {

@@ -1,13 +1,14 @@
 #include "../../include/emulator.h"
 
 void run(EmulatorContext *ctx) {
+  if (ctx->json_mode)
+    fprintf(stdout, "[");
   ctx->pc = 0;
   while (1) {
     int instr = ctx->memory[ctx->pc];
 
     int opcode = instr & 0x000000FF; // Bottom 8 bits for opcode
     int operand = instr >> 8;        // Top 24 bits for operand
-    printf("%d %d\n", operand, opcode);
 
     switch (opcode) {
     default:
@@ -79,10 +80,25 @@ void run(EmulatorContext *ctx) {
       ctx->pc = ctx->pc + operand;
       break;
     case 18: // HALT
+      if (!ctx->json_mode) {
+        printf("\nInstr: 0x%08X ", instr);
+        printf("Operand: %d Opcode: %d\n", operand, opcode);
+        print_memory(ctx);
+      } else {
+        print_memory_json(ctx);
+        fprintf(stdout, "]");
+      }
       return;
       break;
     }
-    print_memory(ctx);
+    if (!ctx->json_mode) {
+      printf("\nInstr: 0x%08X ", instr);
+      printf("Operand: %d Opcode: %d\n", operand, opcode);
+      print_memory(ctx);
+    } else {
+      print_memory_json(ctx);
+      fprintf(stdout, ",");
+    }
     ctx->pc++;
   }
 }

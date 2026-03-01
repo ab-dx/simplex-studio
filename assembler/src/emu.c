@@ -1,8 +1,12 @@
 #include "../include/emulator.h"
+#include <string.h>
 
 int main(int argc, char **argv) {
   if (argc != 2) {
-    fprintf(stderr, "USAGE emu output.obj");
+    fprintf(stderr, "USAGE:\n");
+    fprintf(stderr,
+            "\tJSON MODE: emu -j (Read from stdin and write to stdout)\n");
+    fprintf(stderr, "\tRegular MODE: output.obj\n");
     return 1;
   }
 
@@ -13,9 +17,10 @@ int main(int argc, char **argv) {
   ctx.sp = 0;
   ctx.a = 0;
   ctx.b = 0;
+  ctx.json_mode = (strcmp(argv[1], "-j") == 0) ? 1 : 0;
 
   // Initialise the file descriptors
-  FILE *obj_file = fopen(argv[1], "r");
+  FILE *obj_file = ctx.json_mode ? stdin : fopen(argv[1], "r");
 
   // Populate memory registers
   populate_memory(&ctx, obj_file);

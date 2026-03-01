@@ -39,6 +39,7 @@ typedef struct {
   Symbol sym_table[256]; // Array for label definitions
   int sym_count;         // Count of labels defined
   int has_error;         // Toggle for error in pass
+  int io_mode;           // Toggle for stdin-stdout IO
 } AssemblerContext;
 
 InstructionDef *lookup_instruction(char *mnemonic);
