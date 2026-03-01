@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
   // Perform the second pass after building context
   pass_2(&ctx, output_obj_file, output_lst_file);
 
-  // Close file descriptor
+  // Close file descriptors
   fclose(input_file);
   fclose(output_obj_file);
   fclose(output_lst_file);

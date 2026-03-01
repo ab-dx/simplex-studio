@@ -1,4 +1,4 @@
-#include "../include/assembler.h"
+#include "../../include/assembler.h"
 #include <string.h>
 
 Symbol *lookup_symbol(AssemblerContext *ctx, char *label) {

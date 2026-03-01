@@ -1,4 +1,4 @@
-#include "../include/assembler.h"
+#include "../../include/assembler.h"
 
 void print_Line(Line line) {
   printf("Line:\n");

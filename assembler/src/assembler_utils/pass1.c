@@ -1,4 +1,4 @@
-#include "../include/assembler.h"
+#include "../../include/assembler.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
