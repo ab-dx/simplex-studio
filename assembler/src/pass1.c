@@ -1,5 +1,6 @@
 #include "../include/assembler.h"
 #include <ctype.h>
+#include <stdlib.h>
 #include <string.h>
 
 void trim(char *str) {
@@ -81,21 +82,46 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
   // Write to AssmeblerContext
   // Construct Line struct
   Line *line = &ctx->lines[ctx->line_count];
-  line->pc = ctx->line_count + 1;
+  line->pc = ctx->line_count;
   strcpy(line->original_line, original_line);
+
   if (mnemonic_ptr != NULL) {
     strcpy(line->mnemonic, mnemonic_ptr);
+    if (imm_ptr != NULL) {
+      // Check if it's a number (starts with digit, -, or +)
+      if (isdigit(imm_ptr[0]) || imm_ptr[0] == '-' || imm_ptr[0] == '+') {
+        line->op_type = NUMBER;
+        // Hex (0x) and decimal parsing
+        if (strncmp(imm_ptr, "0x", 2) == 0 || strncmp(imm_ptr, "0X", 2) == 0) {
+          line->op_value = (int)strtol(imm_ptr, NULL, 16);
+        } else {
+          line->op_value = (int)strtol(imm_ptr, NULL, 10);
+        }
+        line->op_label[0] = '\0';
+      } else {
+        // Otherwise must be label reference
+        line->op_type = LABEL_REF;
+        strcpy(line->op_label, imm_ptr);
+        line->op_value = 0;
+      }
+    } else {
+      // No operand
+      line->op_type = NONE;
+      line->op_label[0] = '\0';
+      line->op_value = 0;
+    }
   }
-  ctx->line_count = ctx->line_count + 1;
 
   if (symbol_found) {
-    strcpy(line->op_label, label);
+    strcpy(line->defined_label, label);
     // Construct Symbol struct
     Symbol *sym = &ctx->sym_table[ctx->sym_count];
     strcpy(sym->name, label);
     sym->address = line->pc;
     ctx->sym_count = ctx->sym_count + 1;
   }
+
+  ctx->line_count = ctx->line_count + 1;
 
   printf("Label: %s\nMnemonic: %s\nImmediate: %s\n", label, mnemonic_ptr,
          imm_ptr);
