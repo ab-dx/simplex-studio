@@ -33,3 +33,7 @@ typedef struct {
 } AssemblerContext;
 
 void pass_1(AssemblerContext *ctx, FILE *input_file);
+
+void print_Line(Line line);
+void print_Symbol(Symbol symbol);
+void print_assembler_context(AssemblerContext ctx);

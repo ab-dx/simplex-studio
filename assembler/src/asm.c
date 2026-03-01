@@ -18,9 +18,7 @@ int main(int argc, char **argv) {
   // Perform the first pass
   pass_1(&ctx, input_file);
 
-  printf("\nAssemblerContext:\n");
-  printf("\tSymbol count: %d\n", ctx.sym_count);
-  printf("\tLine count: %d\n", ctx.line_count);
+  print_assembler_context(ctx);
 
   // Close file descriptor
   fclose(input_file);

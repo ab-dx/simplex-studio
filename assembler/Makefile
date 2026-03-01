@@ -1,2 +1,2 @@
-asm: src/asm.c src/pass1.c src/pass2.c src/instr.c
-	gcc src/asm.c src/pass1.c src/pass2.c src/instr.c -Iinclude -o build/target/asm
+asm: src/asm.c src/pass1.c src/pass2.c src/instr.c src/format.c
+	gcc src/asm.c src/pass1.c src/pass2.c src/instr.c src/format.c -Iinclude -o build/target/asm
