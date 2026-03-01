@@ -16,7 +16,7 @@ void trim(char *str) {
     end--;
   }
 
-  // If the string was trimmed, adjust the null terminator
+  // Adjust the null terminator
   if (begin > 0 || end < (strlen(str) - 1)) {
     memmove(str, str + begin, end - begin + 1);
     str[end - begin + 1] = '\0';
