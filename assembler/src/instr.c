@@ -1,9 +1,10 @@
 #include "../include/assembler.h"
 #include <string.h>
 
-#define NUM_INSTR 20
+#define NUM_INSTR 21
 
 InstructionDef instr_table[NUM_INSTR] = {
+    {"data", -1, HAS_OPERAND}, // Special instruction
     {"ldc", 0, HAS_OPERAND},
     {"adc", 1, HAS_OPERAND},
     {"ldl", 2, HAS_OPERAND},
@@ -12,8 +13,8 @@ InstructionDef instr_table[NUM_INSTR] = {
     {"stnl", 5, HAS_OPERAND},
     {"add", 6, NO_OPERAND},
     {"sub", 7, NO_OPERAND},
-    {"shl", 8, HAS_OPERAND},
-    {"shr", 9, HAS_OPERAND},
+    {"shl", 8, NO_OPERAND},
+    {"shr", 9, NO_OPERAND},
     {"adj", 10, HAS_OPERAND},
     {"a2sp", 11, NO_OPERAND},
     {"sp2a", 12, NO_OPERAND},

@@ -30,6 +30,7 @@ typedef struct {
 typedef struct {
   char name[64]; // Name of symbol/label
   int address;   // PC address
+  int used;      // Used/unused status
 } Symbol;
 
 typedef struct {
@@ -37,9 +38,16 @@ typedef struct {
   int line_count;        // Count of lines parsed
   Symbol sym_table[256]; // Array for label definitions
   int sym_count;         // Count of labels defined
+  int has_error;         // Toggle for error in pass
 } AssemblerContext;
 
+InstructionDef *lookup_instruction(char *mnemonic);
+Symbol *lookup_symbol(AssemblerContext *ctx, char *label);
+void set_symbol_used(AssemblerContext *ctx, char *label);
+
 void pass_1(AssemblerContext *ctx, FILE *input_file);
+void pass_2(AssemblerContext *ctx, FILE *output_obj_file,
+            FILE *output_lst_file);
 
 void print_Line(Line line);
 void print_Symbol(Symbol symbol);

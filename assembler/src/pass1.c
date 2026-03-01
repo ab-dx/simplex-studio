@@ -44,7 +44,8 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
   printf("%s\n", buffer);
 
   char original_line[1024];
-  int symbol_found = 0;
+  int symbol_found = 0;     // Toggled for label found in line
+  int set_pseudo_instr = 0; // Toggled for set_pseudo_instr
 
   trim(buffer);                  // Remove leading and trailing whitespace
   strcpy(original_line, buffer); // Retain a copy of the original line
@@ -63,9 +64,15 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
   // Similarly, check for labels
   char *colon_ptr = strchr(buffer, ':');
   char label[32];
-  // Split the string at : by terminating here
   if (colon_ptr != NULL) {
+    // Split the string at : by terminating here
     *colon_ptr = '\0';
+    // Check for valid label name
+    if (!isalpha(buffer[0])) {
+      fprintf(stderr, "ERROR: Invalid label name %s\n", buffer);
+      ctx->has_error = 1;
+      exit(1);
+    }
     symbol_found = 1;
     strcpy(label, buffer);
   } else {
@@ -78,6 +85,7 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
   // Split on whitespaces, first token is the mnemonic, next is the immediate
   char *mnemonic_ptr = strtok(instr_ptr, " \t\n");
   char *imm_ptr = strtok(NULL, " \t\n");
+  char *extra_imm_ptr = strtok(NULL, " \t\n");
 
   // Write to AssmeblerContext
   // Construct Line struct
@@ -86,16 +94,36 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
   strcpy(line->original_line, original_line);
 
   if (mnemonic_ptr != NULL) {
+    trim(mnemonic_ptr);
     strcpy(line->mnemonic, mnemonic_ptr);
     if (imm_ptr != NULL) {
+      trim(imm_ptr);
       // Check if it's a number (starts with digit, -, or +)
       if (isdigit(imm_ptr[0]) || imm_ptr[0] == '-' || imm_ptr[0] == '+') {
         line->op_type = NUMBER;
         // Hex (0x) and decimal parsing
         if (strncmp(imm_ptr, "0x", 2) == 0 || strncmp(imm_ptr, "0X", 2) == 0) {
           line->op_value = (int)strtol(imm_ptr, NULL, 16);
+          // Check for illegal hex
+          for (char *start = imm_ptr + 2; *start != '\0'; start++) {
+            if (!(isdigit(*start) ||
+                  ('A' <= toupper(*start) && toupper(*start) <= 'F'))) {
+              fprintf(stderr, "ERROR: Illegal immediate '%s'\n", imm_ptr);
+              ctx->has_error = 1;
+              exit(1);
+            }
+          }
         } else {
           line->op_value = (int)strtol(imm_ptr, NULL, 10);
+          // Check for illegal decimal
+          // string to int to string conversion should match
+          char imm_buffer[100];
+          snprintf(imm_buffer, sizeof(buffer), "%d", line->op_value);
+          if (strcmp(imm_buffer, imm_ptr) != 0) {
+            fprintf(stderr, "ERROR: Illegal immediate %s\n", imm_ptr);
+            ctx->has_error = 1;
+            exit(1);
+          }
         }
         line->op_label[0] = '\0';
       } else {
@@ -110,20 +138,51 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
       line->op_label[0] = '\0';
       line->op_value = 0;
     }
+
+    if (extra_imm_ptr != NULL) {
+      fprintf(stderr, "ERROR: Extra on end of line: %s\n", line->original_line);
+      ctx->has_error = 1;
+      exit(1);
+    }
+
+    // Handling SET pseudo instruction
+    if (strcmp(line->mnemonic, "SET") == 0) {
+      set_pseudo_instr = 1;
+      // Clear existing instruction in line, interpret as SET instruction
+      strcpy(line->mnemonic, "");
+      symbol_found = 1;
+
+      strcpy(line->defined_label, label);
+      // Construct Symbol struct
+      Symbol *sym = &ctx->sym_table[ctx->sym_count];
+      strcpy(sym->name, label);
+      sym->address = line->op_value; // SET value for symbol
+      sym->used = 0;
+      ctx->sym_count = ctx->sym_count + 1;
+    }
   }
 
-  if (symbol_found) {
+  if (symbol_found && !set_pseudo_instr) {
+    // Check for duplicates
+    for (int i = 0; i < ctx->sym_count; i++) {
+      if (strcmp(label, ctx->sym_table[i].name) == 0) {
+        fprintf(stderr, "ERROR: Duplicate label: %s\n", label);
+        ctx->has_error = 1;
+        exit(1);
+      }
+    }
     strcpy(line->defined_label, label);
     // Construct Symbol struct
     Symbol *sym = &ctx->sym_table[ctx->sym_count];
     strcpy(sym->name, label);
     sym->address = line->pc;
+    sym->used = 0;
     ctx->sym_count = ctx->sym_count + 1;
   }
 
   ctx->line_count = ctx->line_count + 1;
 
-  printf("Label: %s\nMnemonic: %s\nImmediate: %s\n", label, mnemonic_ptr,
+  printf("Label: '%s'\nMnemonic: '%s'\nImmediate: '%s'\n", label, mnemonic_ptr,
          imm_ptr);
 }
 

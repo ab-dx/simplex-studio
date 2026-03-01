@@ -21,6 +21,6 @@ next:   ldc 1
 end:    ldc 0          ; dead code
 
 done:   HALT
-
-; -------- data section --------
+;
+; ; -------- data section --------
 result: data 0

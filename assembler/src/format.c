@@ -5,7 +5,7 @@ void print_Line(Line line) {
   printf("\tOriginal line: %s\n", line.original_line);
   printf("\tPC: %d", line.pc);
   printf("\tDefined Label: %s", line.defined_label);
-  printf("\tMnemonic: %s", line.mnemonic);
+  printf("\tMnemonic: '%s'", line.mnemonic);
   printf("\tOperand Type: %s", line.op_type == NONE     ? "NONE"
                                : line.op_type == NUMBER ? "NUMBER"
                                                         : "LABEL_REF");
