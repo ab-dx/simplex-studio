@@ -45,9 +45,9 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
 
   char original_line[1024];
   int symbol_found = 0;
-  strcpy(original_line, buffer); // Retain a copy of the original line
 
-  trim(buffer); // Remove leading and trailing whitespace
+  trim(buffer);                  // Remove leading and trailing whitespace
+  strcpy(original_line, buffer); // Retain a copy of the original line
 
   // Returns pointer to first occurence of ; for finding comments
   char *comment_start = strchr(buffer, ';');

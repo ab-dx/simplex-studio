@@ -1,8 +1,8 @@
 #include "../include/assembler.h"
 
 int main(int argc, char **argv) {
-  if (argc != 2) {
-    fprintf(stderr, "USAGE: asm input.asm\n");
+  if (argc != 4) {
+    fprintf(stderr, "USAGE: asm input.asm output.obj output.lst\n");
     return 1;
   }
   printf("Assembling %s...\n", argv[1]);
