@@ -1,4 +1,5 @@
 #include "../../include/emulator.h"
+#include <stdint.h>
 
 void run(EmulatorContext *ctx) {
   if (ctx->json_mode)
@@ -6,19 +7,26 @@ void run(EmulatorContext *ctx) {
   ctx->pc = 0;
   int cycle_count = 0;          // Safety counter
   const int MAX_CYCLES = 10000; // Limit for malicious emulations
-  while (1) {
+  while (ctx->pc < ctx->program_size) {
     if (cycle_count++ > MAX_CYCLES) { // Check the limit
       if (!ctx->json_mode) {
         printf("\nERROR: Execution Limit Exceeded! Infinite loop detected.\n");
       } else {
-        fprintf(stdout, "{\"error\": \"Timeout: Execution Limit Exceeded\"}]");
+        fprintf(stderr, "{\"error\": \"Timeout: Execution Limit Exceeded\"}]");
       }
       return;
     }
-    int instr = ctx->memory[ctx->pc];
+    // int instr = ctx->memory[ctx->pc];
+    //
+    // int opcode = instr & 0x000000FF; // Bottom 8 bits for opcode
+    // int operand = instr >> 8;        // Top 24 bits for operand
+    uint32_t instr = (uint32_t)ctx->memory[ctx->pc];
+    int opcode = instr & 0xFFu;
+    int operand = (int)(instr >> 8); // now 0..2^24-1
+    if (operand & 0x00800000)        // if sign bit of 24-bit is set
+      operand |= 0xFF000000;
 
-    int opcode = instr & 0x000000FF; // Bottom 8 bits for opcode
-    int operand = instr >> 8;        // Top 24 bits for operand
+    int next_pc = ctx->pc + 1;
 
     switch (opcode) {
     default:
@@ -27,6 +35,7 @@ void run(EmulatorContext *ctx) {
       } else {
         fprintf(stdout, "{\"error\": \"Invalid Opcode\"}]");
       }
+      return;
       break;
     case 0: // ldc
       ctx->b = ctx->a;
@@ -75,24 +84,23 @@ void run(EmulatorContext *ctx) {
     case 13: // call
       ctx->b = ctx->a;
       ctx->a = ctx->pc;
-      ctx->pc = ctx->pc + operand - 1; // +1 cancels out later
+      next_pc = ctx->pc + operand + 1;
       break;
     case 14: // return
-      ctx->pc = ctx->a;
+             // ctx->pc = ctx->a;
+      next_pc = ctx->a + 1;
       ctx->a = ctx->b;
       break;
     case 15: // brz
-      if (ctx->a == 0) {
-        ctx->pc = ctx->pc + operand - 1; // +1 cancels out later
-      }
+      if (ctx->a == 0)
+        next_pc = ctx->pc + operand + 1;
       break;
     case 16: // brlz
-      if (ctx->a < 0) {
-        ctx->pc = ctx->pc + operand - 1; // +1 cancels out later
-      }
+      if (ctx->a < 0)
+        next_pc = ctx->pc + operand + 1;
       break;
-    case 17:                           // br
-      ctx->pc = ctx->pc + operand - 1; // +1 cancels out later
+    case 17: // br
+      next_pc = ctx->pc + operand + 1;
       break;
     case 18: // HALT
       if (!ctx->json_mode) {
@@ -114,6 +122,6 @@ void run(EmulatorContext *ctx) {
       print_memory_json(ctx);
       fprintf(stdout, ",");
     }
-    ctx->pc++;
+    ctx->pc = next_pc;
   }
 }

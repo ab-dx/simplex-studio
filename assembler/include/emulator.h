@@ -7,6 +7,7 @@ typedef struct {
   int a;
   int b;
   int json_mode;
+  int program_size;
 } EmulatorContext;
 
 void populate_memory(EmulatorContext *ctx, FILE *obj_file);

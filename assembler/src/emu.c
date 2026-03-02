@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
   EmulatorContext ctx;
   // Initialise context
   ctx.pc = 0;
-  ctx.sp = 0;
+  ctx.sp = 1024; // TODO: Fix data memory - instr memory overlaps
   ctx.a = 0;
   ctx.b = 0;
   ctx.json_mode = (strcmp(argv[1], "-j") == 0) ? 1 : 0;

@@ -6,18 +6,24 @@ void pass_2(AssemblerContext *ctx, FILE *output_obj_file,
             FILE *output_lst_file) {
   for (int pc = 0; pc < ctx->line_count; pc++) {
     Line line = ctx->lines[pc]; // Retrieve current line
+    int result = 0;             // Resultant HEX Instruction
 
     if (strcmp(line.mnemonic, "") == 0) {
       // Empty instruction, only label on this line
       // Write instruction as text to listing file
-      fprintf(output_lst_file, "%08X\t        \t%s\n", pc, line.original_line);
+      // Write 0 to obj file
+      // fprintf(output_lst_file, "%08X\t        \t%s\n", pc,
+      // line.original_line);
+      fprintf(output_lst_file, "%08X\t%08X\t%s\n", pc, result,
+              line.original_line);
+      fwrite(&result, sizeof(int), 1, output_obj_file);
+
       continue;
     }
 
     InstructionDef *instr =
         lookup_instruction(line.mnemonic); // Retrieve instr for mnemonic
 
-    int result = 0;        // Resultant HEX Instruction
     int offset = 0;        // For PC relative addressing
     int target = 0;        // Target address for PC relative addressing
     Symbol *target_symbol; // Target symbol
@@ -68,7 +74,14 @@ void pass_2(AssemblerContext *ctx, FILE *output_obj_file,
         // Set symbol as used
         set_symbol_used(ctx, line.op_label);
         target = target_symbol->address;
-        offset = target - pc - 1;
+        int is_relative =
+            (instr->opcode == 13 || instr->opcode >= 15 && instr->opcode <= 17);
+
+        if (is_relative) {
+          offset = target - pc - 1;
+        } else {
+          offset = target; // Absolute address for ldc
+        }
         result = (((offset & 0xFFFFFF) << 8) | instr->opcode);
         break;
       }

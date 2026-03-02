@@ -87,7 +87,7 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
   char *mnemonic_ptr = strtok(instr_ptr, " \t\n");
   char *imm_ptr = strtok(NULL, " \t\n");
   char *extra_imm_ptr = strtok(NULL, " \t\n");
-
+  int is_pc_line = 0;
   // Write to AssmeblerContext
   // Construct Line struct
   Line *line = &ctx->lines[ctx->line_count];
@@ -97,6 +97,7 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
   if (mnemonic_ptr != NULL) {
     trim(mnemonic_ptr);
     strcpy(line->mnemonic, mnemonic_ptr);
+    is_pc_line = 1;
     if (imm_ptr != NULL) {
       trim(imm_ptr);
       // Check if it's a number (starts with digit, -, or +)
@@ -154,6 +155,7 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
     // Handling SET pseudo instruction
     if (strcmp(line->mnemonic, "SET") == 0) {
       set_pseudo_instr = 1;
+      is_pc_line = 0;
       // Clear existing instruction in line, interpret as SET instruction
       strcpy(line->mnemonic, "");
       symbol_found = 1;
@@ -185,8 +187,9 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
     sym->used = 0;
     ctx->sym_count = ctx->sym_count + 1;
   }
-
-  ctx->line_count = ctx->line_count + 1;
+  if (is_pc_line) {
+    ctx->line_count = ctx->line_count + 1;
+  }
 
   if (!ctx->io_mode)
     printf("Label: '%s'\nMnemonic: '%s'\nImmediate: '%s'\n", label,

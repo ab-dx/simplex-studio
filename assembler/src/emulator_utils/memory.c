@@ -5,6 +5,7 @@ void populate_memory(EmulatorContext *ctx, FILE *obj_file) {
   while (fread(&ctx->memory[ctx->pc], sizeof(int), 1, obj_file)) {
     ctx->pc++;
   }
+  ctx->program_size = ctx->pc + 1;
 }
 
 void print_memory(EmulatorContext *ctx) {
