@@ -28,6 +28,10 @@ int main(int argc, char **argv) {
   // Run instructions in memory
   run(&ctx);
 
+  if (ctx.json_mode) {
+    print_memory_complete_json(&ctx);
+  }
+
   // Close file descriptors
   fclose(obj_file);
   return 0;

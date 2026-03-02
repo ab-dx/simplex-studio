@@ -77,3 +77,4 @@ return
 ;
 count: data 10
 result: data 0
+HALT

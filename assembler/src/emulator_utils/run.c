@@ -60,7 +60,7 @@ void run(EmulatorContext *ctx) {
     case 13: // call
       ctx->b = ctx->a;
       ctx->a = ctx->pc;
-      ctx->pc = ctx->pc + operand;
+      ctx->pc = ctx->pc + operand - 1; // +1 cancels out later
       break;
     case 14: // return
       ctx->pc = ctx->a;
@@ -68,16 +68,16 @@ void run(EmulatorContext *ctx) {
       break;
     case 15: // brz
       if (ctx->a == 0) {
-        ctx->pc = ctx->pc + operand;
+        ctx->pc = ctx->pc + operand - 1; // +1 cancels out later
       }
       break;
     case 16: // brlz
       if (ctx->a < 0) {
-        ctx->pc = ctx->pc + operand;
+        ctx->pc = ctx->pc + operand - 1; // +1 cancels out later
       }
       break;
-    case 17: // br
-      ctx->pc = ctx->pc + operand;
+    case 17:                           // br
+      ctx->pc = ctx->pc + operand - 1; // +1 cancels out later
       break;
     case 18: // HALT
       if (!ctx->json_mode) {
