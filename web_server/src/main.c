@@ -1,9 +1,4 @@
-#include <netinet/in.h>
-#include <stdio.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/wait.h>
-#include <unistd.h>
+#include "../include/server.h"
 
 int main() {
   int server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -30,70 +25,15 @@ int main() {
     printf("--- RECEIVED FROM CLIENT ---\n%s\n----------------------------\n",
            payload);
     // Extract the code
-    char *separator = strstr(payload, "\r\n\r\n");
-    char *assembly_code = (separator != NULL) ? separator + 4 : "ldc 5\nHALT\n";
-    printf("Attempting to compile:\n'%s'\n", assembly_code);
+    char *payload_copy = malloc(sizeof(payload));
+    strcpy(payload_copy, payload);
+    char *verb = strtok(payload_copy, " \t\n");
+    printf("HTTP Verb: %s\n", verb);
 
-    int server_to_asm[2];
-    int asm_to_server[2];
-    pipe(server_to_asm);
-    pipe(asm_to_server);
+    char *route = strtok(NULL, " \t\n");
+    printf("HTTP Route: %s\n", route);
 
-    // Fork a new assembler for this request
-    pid_t pid = fork();
-
-    if (pid == 0) {
-      // CHILD PROCESS
-      dup2(server_to_asm[0], STDIN_FILENO);
-      dup2(asm_to_server[1], STDOUT_FILENO);
-      // dup2(asm_to_server[1], STDERR_FILENO);
-      close(server_to_asm[0]);
-      close(server_to_asm[1]);
-      close(asm_to_server[0]);
-      close(asm_to_server[1]);
-
-      execl("/home/helix/code/simplex_project/assembler/build/target/asm",
-            "/home/helix/code/simplex_project/assembler/build/target/asm", "-i",
-            NULL);
-      perror("execl failed");
-      return 1; // Exit child if execl fails
-    } else {
-      // PARENT PROCESS
-      close(server_to_asm[0]);
-      close(asm_to_server[1]);
-
-      // Send code and close write pipe so assembler can finish
-      write(server_to_asm[1], assembly_code, strlen(assembly_code));
-      int written =
-          write(server_to_asm[1], assembly_code, strlen(assembly_code));
-      printf("Bytes written to assembler: %d\n", written);
-      close(server_to_asm[1]);
-      close(server_to_asm[1]);
-
-      // Read the binary response
-      char buffer[1024] = {0};
-      int count = 0;
-      int bytes_read;
-      while ((bytes_read = read(asm_to_server[0], buffer + count, 4)) > 0) {
-        count += bytes_read;
-      }
-      printf("Bytes read from assembler: %d\n", count);
-      close(asm_to_server[0]); // Clean up read pipe
-
-      // Format and send HTTP response
-      char headers[256];
-      int header_len = snprintf(headers, sizeof(headers),
-                                "HTTP/1.1 200 OK\r\n"
-                                "Content-Type: application/octet-stream\r\n"
-                                "Content-Length: %d\r\n"
-                                "\r\n",
-                                count);
-      write(new_socket, headers, header_len);
-      write(new_socket, buffer, count);
-      waitpid(pid, NULL, 0);
-
-      close(new_socket);
-    }
+    handle_route(new_socket, verb, route, payload);
   }
 
   return 0;

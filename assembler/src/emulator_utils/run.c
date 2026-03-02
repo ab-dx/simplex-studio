@@ -12,6 +12,11 @@ void run(EmulatorContext *ctx) {
 
     switch (opcode) {
     default:
+      if (!ctx->json_mode) {
+        printf("ERROR: Invalid Opcode %d at PC 0x%08X\n", opcode, ctx->pc);
+      } else {
+        fprintf(stdout, "{\"error\": \"Invalid Opcode\"}]");
+      }
       break;
     case 0: // ldc
       ctx->b = ctx->a;
