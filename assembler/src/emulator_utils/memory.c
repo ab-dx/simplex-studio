@@ -22,6 +22,11 @@ void print_memory_json(EmulatorContext *ctx) {
 void print_memory_complete_json(EmulatorContext *ctx) {
   fprintf(stdout, "[");
   for (int i = 0; i < sizeof(ctx->memory) / sizeof(int); i++) {
+    if (i == sizeof(ctx->memory) / sizeof(int) - 1) {
+      fprintf(stdout, "{\"%d\": \"%08X\"}", i,
+              ctx->memory[i]); // without trailing comma
+      continue;
+    }
     fprintf(stdout, "{\"%d\": \"%08X\"},", i, ctx->memory[i]);
   }
   fprintf(stdout, "]");

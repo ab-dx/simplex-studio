@@ -25,11 +25,16 @@ int main(int argc, char **argv) {
   // Populate memory registers
   populate_memory(&ctx, obj_file);
 
+  if (ctx.json_mode) {
+    fprintf(stdout, "[");
+  }
   // Run instructions in memory
   run(&ctx);
 
   if (ctx.json_mode) {
+    fprintf(stdout, ",");
     print_memory_complete_json(&ctx);
+    fprintf(stdout, "]");
   }
 
   // Close file descriptors
