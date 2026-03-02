@@ -38,7 +38,7 @@ void assemble_request(char *assembly_code, int socket) {
     close(server_to_asm[1]);
 
     // Read the binary response
-    char buffer[100 * 1024] = {0}; // 100kb buffer for program
+    char buffer[500 * 1024] = {0}; // 500kb buffer for program
     int count = 0;
     int bytes_read;
     while ((bytes_read = read(asm_to_server[0], buffer + count, 4)) > 0) {
@@ -57,6 +57,7 @@ void assemble_request(char *assembly_code, int socket) {
     char headers[256];
     int header_len = snprintf(headers, sizeof(headers),
                               "HTTP/1.1 200 OK\r\n"
+                              "Access-Control-Allow-Origin: *\r\n"
                               "Content-Type: application/octet-stream\r\n"
                               "Content-Length: %d\r\n"
                               "\r\n",

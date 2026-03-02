@@ -38,7 +38,7 @@ void emulate_request(char *machine_code, int content_length, int socket) {
     close(server_to_emu[1]);
 
     // Read the binary response
-    char buffer[500 * 1024] = {0}; // 500 kb buffer for response
+    char buffer[1000 * 1024] = {0}; // 1000 kb buffer for response
     int count = 0;
     int bytes_read;
     while (count < sizeof(buffer) - 1) { // Don't read more than buffer size
@@ -61,6 +61,7 @@ void emulate_request(char *machine_code, int content_length, int socket) {
     char headers[256];
     int header_len = snprintf(headers, sizeof(headers),
                               "HTTP/1.1 200 OK\r\n"
+                              "Access-Control-Allow-Origin: *\r\n"
                               "Content-Type: application/json\r\n"
                               "Content-Length: %d\r\n"
                               "\r\n",

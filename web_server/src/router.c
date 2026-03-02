@@ -32,5 +32,15 @@ void handle_route(int socket, char *verb, char *route, char *payload) {
       printf("Attempting to emulate:\n'%s'\n", machine_code);
       emulate_request(machine_code, content_length, socket);
     }
+  } else if (strcmp(verb, "OPTIONS") == 0) {
+    char *options_response =
+        "HTTP/1.1 204 No Content\r\n"
+        "Access-Control-Allow-Origin: *\r\n"
+        "Access-Control-Allow-Methods: POST, GET, OPTIONS\r\n"
+        "Access-Control-Allow-Headers: Content-Type, Accept\r\n"
+        "\r\n";
+
+    write(socket, options_response, strlen(options_response));
+    close(socket);
   }
 }

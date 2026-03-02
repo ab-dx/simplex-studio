@@ -6,7 +6,7 @@ int main(int argc, char **argv) {
     fprintf(stderr, "USAGE:\n");
     fprintf(stderr,
             "\tJSON MODE: emu -j (Read from stdin and write to stdout)\n");
-    fprintf(stderr, "\tRegular MODE: output.obj\n");
+    fprintf(stderr, "\tRegular MODE: emu output.obj\n");
     return 1;
   }
 
