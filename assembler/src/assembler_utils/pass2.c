@@ -74,8 +74,8 @@ void pass_2(AssemblerContext *ctx, FILE *output_obj_file,
         // Set symbol as used
         set_symbol_used(ctx, line.op_label);
         target = target_symbol->address;
-        int is_relative =
-            (instr->opcode == 13 || instr->opcode >= 15 && instr->opcode <= 17);
+        int is_relative = (instr->opcode == 13 ||
+                           (instr->opcode >= 15 && instr->opcode <= 17));
 
         if (is_relative) {
           offset = target - pc - 1;

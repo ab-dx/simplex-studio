@@ -1,7 +1,8 @@
 #include <stdio.h>
+#define MEM_SIZE 1024
 
 typedef struct {
-  int memory[10 * 1024];
+  int memory[MEM_SIZE];
   int pc;
   int sp;
   int a;

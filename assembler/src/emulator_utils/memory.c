@@ -1,11 +1,15 @@
 #include "../../include/emulator.h"
 
 void populate_memory(EmulatorContext *ctx, FILE *obj_file) {
+  for (int i = 0; i < MEM_SIZE; i++)
+    ctx->memory[i] = 0;
+
   ctx->pc = 0;
-  while (fread(&ctx->memory[ctx->pc], sizeof(int), 1, obj_file)) {
+  while (ctx->pc < MEM_SIZE &&
+         fread(&ctx->memory[ctx->pc], sizeof(int), 1, obj_file)) {
     ctx->pc++;
   }
-  ctx->program_size = ctx->pc + 1;
+  ctx->program_size = ctx->pc;
 }
 
 void print_memory(EmulatorContext *ctx) {
@@ -22,8 +26,8 @@ void print_memory_json(EmulatorContext *ctx) {
 
 void print_memory_complete_json(EmulatorContext *ctx) {
   fprintf(stdout, "[");
-  for (int i = 0; i < sizeof(ctx->memory) / sizeof(int); i++) {
-    if (i == sizeof(ctx->memory) / sizeof(int) - 1) {
+  for (int i = 0; i < MEM_SIZE; i++) {
+    if (i == MEM_SIZE - 1) {
       fprintf(stdout, "{\"%d\": \"%08X\"}", i,
               ctx->memory[i]); // without trailing comma
       continue;

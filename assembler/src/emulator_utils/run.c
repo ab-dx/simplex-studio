@@ -71,7 +71,7 @@ void run(EmulatorContext *ctx) {
       ctx->a = ctx->b >> ctx->a;
       break;
     case 10: // adj
-      ctx->sp = ctx->sp + operand;
+      ctx->sp = ctx->sp - operand;
       break;
     case 11: // a2sp
       ctx->sp = ctx->a;

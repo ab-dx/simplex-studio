@@ -120,7 +120,7 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
           // Check for illegal decimal
           // string to int to string conversion should match
           char imm_buffer[100];
-          snprintf(imm_buffer, sizeof(buffer), "%d", line->op_value);
+          snprintf(imm_buffer, sizeof(imm_buffer), "%d", line->op_value);
           // Handle + sign which may not appear in int representation explicitly
           int displ = 0;
           if (*imm_ptr == '+') {
