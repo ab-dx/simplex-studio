@@ -120,7 +120,12 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
           // string to int to string conversion should match
           char imm_buffer[100];
           snprintf(imm_buffer, sizeof(buffer), "%d", line->op_value);
-          if (strcmp(imm_buffer, imm_ptr) != 0) {
+          // Handle + sign which may not appear in int representation explicitly
+          int displ = 0;
+          if (*imm_ptr == '+') {
+            displ = 1;
+          }
+          if (strcmp(imm_buffer, imm_ptr + displ) != 0) {
             fprintf(stderr, "ERROR: Illegal immediate %s\n", imm_ptr);
             ctx->has_error = 1;
             exit(1);
