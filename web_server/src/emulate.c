@@ -47,6 +47,12 @@ void emulate_request(char *machine_code, int content_length, int socket) {
       if (bytes_read <= 0)
         break;
       count += bytes_read;
+      if (count >= sizeof(buffer) - 1) {
+        printf("WARNING: Emulator output exceeded buffer limit. Terminating "
+               "child process.\n");
+        kill(pid, SIGKILL);
+        break;
+      }
     }
     printf("Bytes read from emulator: %d\n", count);
     close(emu_to_server[0]); // Clean up read pipe

@@ -43,6 +43,12 @@ void assemble_request(char *assembly_code, int socket) {
     int bytes_read;
     while ((bytes_read = read(asm_to_server[0], buffer + count, 4)) > 0) {
       count += bytes_read;
+      if (count >= sizeof(buffer) - 1) {
+        printf("WARNING: Assembler output exceeded buffer limit. Terminating "
+               "child process.\n");
+        kill(pid, SIGKILL);
+        break;
+      }
     }
     printf("Bytes read from assembler: %d\n", count);
     close(asm_to_server[0]); // Clean up read pipe

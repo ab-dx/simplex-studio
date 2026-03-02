@@ -4,7 +4,17 @@ void run(EmulatorContext *ctx) {
   if (ctx->json_mode)
     fprintf(stdout, "[");
   ctx->pc = 0;
+  int cycle_count = 0;          // Safety counter
+  const int MAX_CYCLES = 10000; // Limit for malicious emulations
   while (1) {
+    if (cycle_count++ > MAX_CYCLES) { // Check the limit
+      if (!ctx->json_mode) {
+        printf("\nERROR: Execution Limit Exceeded! Infinite loop detected.\n");
+      } else {
+        fprintf(stdout, "{\"error\": \"Timeout: Execution Limit Exceeded\"}]");
+      }
+      return;
+    }
     int instr = ctx->memory[ctx->pc];
 
     int opcode = instr & 0x000000FF; // Bottom 8 bits for opcode
