@@ -31,67 +31,71 @@ void pass_2(AssemblerContext *ctx, FILE *output_obj_file,
     if (instr == NULL) {
       fprintf(stderr, "ERROR: Unknown Instruction: %s\n", line.mnemonic);
       ctx->has_error = 1;
-      exit(1);
-    }
+      /* exit(1); */
+    } else {
 
-    switch (instr->expected_op) {
-    default:
-    case NO_OPERAND:
-      if (line.op_type != NONE) {
-        fprintf(stderr, "ERROR: Unexpected operand for %s\n", line.mnemonic);
-        exit(1);
-      }
-      /* Write Opcode only as 32 bit payload */
-      result = instr->opcode;
-      break;
-    case HAS_OPERAND:
-      switch (line.op_type) {
-      case NONE:
-        fprintf(stderr, "ERROR: Expected operand for %s\n", line.mnemonic);
-        ctx->has_error = 1;
-        exit(1);
-        break;
-      case NUMBER:
-        /* Special case for handling "data" */
-        if (strcmp(line.mnemonic, "data") == 0) {
-          result = line.op_value;
-          break;
+      switch (instr->expected_op) {
+      default:
+      case NO_OPERAND:
+        if (line.op_type != NONE) {
+          fprintf(stderr, "ERROR: Unexpected operand for %s\n", line.mnemonic);
+          /* exit(1); */
         }
-
-        /* operand value for top 8 digits (HEX) */
-        /* & with 0xFFFFFF to handle correct left shift for negative numbers */
-        /* opcode for bottom 4 digits (HEX) */
-        result = (((line.op_value & 0xFFFFFF) << 8) | instr->opcode);
+        /* Write Opcode only as 32 bit payload */
+        result = instr->opcode;
         break;
-      case LABEL_REF:
-        /* Offset = Target address - (PC + 1) */
-        target_symbol = lookup_symbol(ctx, line.op_label);
-        if (target_symbol == NULL) {
-          fprintf(stderr, "ERROR: Symbol %s not found\n", line.op_label);
+      case HAS_OPERAND:
+        switch (line.op_type) {
+        case NONE:
+          fprintf(stderr, "ERROR: Expected operand for %s\n", line.mnemonic);
           ctx->has_error = 1;
-          exit(1);
-        }
-        /* Set symbol as used */
-        set_symbol_used(ctx, line.op_label);
-        target = target_symbol->address;
-        int is_relative = (instr->opcode == 13 ||
-                           (instr->opcode >= 15 && instr->opcode <= 17));
+          /* exit(1); */
+          break;
+        case NUMBER:
+          /* Special case for handling "data" */
+          if (strcmp(line.mnemonic, "data") == 0) {
+            result = line.op_value;
+            break;
+          }
 
-        if (is_relative) {
-          offset = target - pc - 1;
-        } else {
-          offset = target; /* Absolute address for ldc */
+          /* operand value for top 8 digits (HEX) */
+          /* & with 0xFFFFFF to handle correct left shift for negative numbers
+           */
+          /* opcode for bottom 4 digits (HEX) */
+          result = (((line.op_value & 0xFFFFFF) << 8) | instr->opcode);
+          break;
+        case LABEL_REF:
+          /* Offset = Target address - (PC + 1) */
+          target_symbol = lookup_symbol(ctx, line.op_label);
+          if (target_symbol == NULL) {
+            fprintf(stderr, "ERROR: Symbol %s not found\n", line.op_label);
+            ctx->has_error = 1;
+            /* exit(1); */
+          } else {
+            /* Set symbol as used */
+            set_symbol_used(ctx, line.op_label);
+            target = target_symbol->address;
+            int is_relative = (instr->opcode == 13 ||
+                               (instr->opcode >= 15 && instr->opcode <= 17));
+
+            if (is_relative) {
+              offset = target - pc - 1;
+            } else {
+              offset = target; /* Absolute address for ldc */
+            }
+            result = (((offset & 0xFFFFFF) << 8) | instr->opcode);
+            break;
+          }
         }
-        result = (((offset & 0xFFFFFF) << 8) | instr->opcode);
         break;
       }
-      break;
     }
-
     /* Write instruction as text to listing file */
-    fprintf(output_lst_file, "%08X\t%08X\t%s\n", pc, result,
-            line.original_line);
-    fwrite(&result, sizeof(int), 1, output_obj_file);
+    if (!ctx->has_error) {
+      fprintf(output_lst_file, "%08X\t%08X\t%s\n", pc, result,
+              line.original_line);
+      fwrite(&result, sizeof(int), 1, output_obj_file);
+    }
   }
 
   /* Check for unused symbols to issue warning */

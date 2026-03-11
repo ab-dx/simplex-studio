@@ -9,5 +9,5 @@ label:
 add 5 ; unexpected operand
 label: ; duplicate label definition
 br nonesuch ; no such label
-fibble; bogus mnemonic
+fibble ; bogus mnemonic
 0def ; bogus mnemonic

@@ -72,7 +72,7 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
     if (!isalpha(buffer[0])) {
       fprintf(stderr, "ERROR: Invalid label name %s\n", buffer);
       ctx->has_error = 1;
-      exit(1);
+      /* exit(1); */
     }
     symbol_found = 1;
     strcpy(label, buffer);
@@ -112,7 +112,7 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
                   ('A' <= toupper(*start) && toupper(*start) <= 'F'))) {
               fprintf(stderr, "ERROR: Illegal immediate '%s'\n", imm_ptr);
               ctx->has_error = 1;
-              exit(1);
+              /* exit(1); */
             }
           }
         } else {
@@ -130,7 +130,7 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
           if (strcmp(imm_buffer, imm_ptr + displ) != 0) {
             fprintf(stderr, "ERROR: Illegal immediate %s\n", imm_ptr);
             ctx->has_error = 1;
-            exit(1);
+            /* exit(1); */
           }
         }
         line->op_label[0] = '\0';
@@ -150,7 +150,7 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
     if (extra_imm_ptr != NULL) {
       fprintf(stderr, "ERROR: Extra on end of line: %s\n", line->original_line);
       ctx->has_error = 1;
-      exit(1);
+      /* exit(1); */
     }
 
     /* Handling SET pseudo instruction */
@@ -177,7 +177,7 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
       if (strcmp(label, ctx->sym_table[i].name) == 0) {
         fprintf(stderr, "ERROR: Duplicate label: %s\n", label);
         ctx->has_error = 1;
-        exit(1);
+        /* exit(1); */
       }
     }
     strcpy(line->defined_label, label);
