@@ -14,15 +14,14 @@ void assemble_request(char *assembly_code, int socket) {
     // CHILD PROCESS
     dup2(server_to_asm[0], STDIN_FILENO);
     dup2(asm_to_server[1], STDOUT_FILENO);
-    dup2(asm_to_server[1], STDERR_FILENO);
+    // dup2(asm_to_server[1], STDERR_FILENO);
     close(server_to_asm[0]);
     close(server_to_asm[1]);
     close(asm_to_server[0]);
     close(asm_to_server[1]);
 
-    execl("/home/helix/code/simplex_project/assembler/build/target/asm",
-          "/home/helix/code/simplex_project/assembler/build/target/asm", "-i",
-          NULL);
+    execl("../assembler/build/target/asm", "../assembler/build/target/asm",
+          "-i", NULL);
     perror("execl failed");
     exit(1); // Exit child if execl fails
   } else {

@@ -29,7 +29,7 @@ void print_memory_complete_json(EmulatorContext *ctx) {
   for (int i = 0; i < MEM_SIZE; i++) {
     if (i == MEM_SIZE - 1) {
       fprintf(stdout, "{\"%d\": \"%08X\"}", i,
-              ctx->memory[i]); // without trailing comma
+              ctx->memory[i]); /* without trailing comma */
       continue;
     }
     fprintf(stdout, "{\"%d\": \"%08X\"},", i, ctx->memory[i]);

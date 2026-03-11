@@ -10,25 +10,25 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  // Declare shared state context
+  /* Declare shared state context */
   EmulatorContext ctx;
-  // Initialise context
+  /* Initialise context */
   ctx.pc = 0;
-  ctx.sp = MEM_SIZE - 1; // TODO: Fix data memory - instr memory overlaps
+  ctx.sp = MEM_SIZE - 1; /* TODO: Fix data memory - instr memory overlaps */
   ctx.a = 0;
   ctx.b = 0;
   ctx.json_mode = (strcmp(argv[1], "-j") == 0) ? 1 : 0;
 
-  // Initialise the file descriptors
+  /* Initialise the file descriptors */
   FILE *obj_file = ctx.json_mode ? stdin : fopen(argv[1], "r");
 
-  // Populate memory registers
+  /* Populate memory registers */
   populate_memory(&ctx, obj_file);
 
   if (ctx.json_mode) {
     fprintf(stdout, "[");
   }
-  // Run instructions in memory
+  /* Run instructions in memory */
   run(&ctx);
 
   if (ctx.json_mode) {
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
     fprintf(stdout, "]");
   }
 
-  // Close file descriptors
+  /* Close file descriptors */
   fclose(obj_file);
   return 0;
 }

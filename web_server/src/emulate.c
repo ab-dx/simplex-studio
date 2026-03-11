@@ -14,15 +14,14 @@ void emulate_request(char *machine_code, int content_length, int socket) {
     // CHILD PROCESS
     dup2(server_to_emu[0], STDIN_FILENO);
     dup2(emu_to_server[1], STDOUT_FILENO);
-    dup2(emu_to_server[1], STDERR_FILENO);
+    // dup2(emu_to_server[1], STDERR_FILENO);
     close(server_to_emu[0]);
     close(server_to_emu[1]);
     close(emu_to_server[0]);
     close(emu_to_server[1]);
 
-    execl("/home/helix/code/simplex_project/assembler/build/target/emu",
-          "/home/helix/code/simplex_project/assembler/build/target/emu", "-j",
-          NULL);
+    execl("../assembler/build/target/emu", "../assembler/build/target/emu",
+          "-j", NULL);
     perror("execl failed");
     exit(1); // Exit child if execl fails
   } else {

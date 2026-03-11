@@ -1,116 +1,206 @@
-        adj 7
+ldc ARR
+ldnl 0
+stl 0
+ldc ARR
+ldnl 1
+ldl 0
+sub
+brlz SWAP_01
+br CONT_01
+SWAP_01:
+    ldc ARR
+    ldnl 1
+    ldc ARR
+    stnl 0
+    ldl 0
+    ldc ARR
+    stnl 1
+CONT_01:
 
-        ; n = 5
-        ldc 5
-        stl 0          ; local[0] = n
+; COMPARE (1,2)
+ldc ARR
+ldnl 1
+stl 0
+ldc ARR
+ldnl 2
+ldl 0
+sub
+brlz SWAP_12
+br CONT_12
+SWAP_12:
+    ldc ARR
+    ldnl 2
+    ldc ARR
+    stnl 1
+    ldl 0
+    ldc ARR
+    stnl 2
+CONT_12:
 
-        ; base = &arr
-        ldc arr
-        stl 3          ; local[3] = base
+; COMPARE (2,3)
+ldc ARR
+ldnl 2
+stl 0
+ldc ARR
+ldnl 3
+ldl 0
+sub
+brlz SWAP_23
+br CONT_23
+SWAP_23:
+    ldc ARR
+    ldnl 3
+    ldc ARR
+    stnl 2
+    ldl 0
+    ldc ARR
+    stnl 3
+CONT_23:
 
-        ; i = 0
-        ldc 0
-        stl 1          ; local[1] = i
+; COMPARE (3,4)
+ldc ARR
+ldnl 3
+stl 0
+ldc ARR
+ldnl 4
+ldl 0
+sub
+brlz SWAP_34
+br CONT_34
+SWAP_34:
+    ldc ARR
+    ldnl 4
+    ldc ARR
+    stnl 3
+    ldl 0
+    ldc ARR
+    stnl 4
+CONT_34:
 
-outer:
-        ; if i >= n-1 → done
+; --- PASS 2: compare (0,1), (1,2), (2,3) ---
+ldc ARR
+ldnl 0
+stl 0
+ldc ARR
+ldnl 1
+ldl 0
+sub
+brlz SWAP2_01
+br CONT2_01
+SWAP2_01:
+    ldc ARR
+    ldnl 1
+    ldc ARR
+    stnl 0
+    ldl 0
+    ldc ARR
+    stnl 1
+CONT2_01:
 
-        ldl 0          ; A = n
-        ldc 1
-        sub            ; A = n - 1
-        ldl 1
-        sub            ; A = (n-1) - i
-        brlz done
-        brz  done
+ldc ARR
+ldnl 1
+stl 0
+ldc ARR
+ldnl 2
+ldl 0
+sub
+brlz SWAP2_12
+br CONT2_12
+SWAP2_12:
+    ldc ARR
+    ldnl 2
+    ldc ARR
+    stnl 1
+    ldl 0
+    ldc ARR
+    stnl 2
+CONT2_12:
 
-        ; j = 0
-        ldc 0
-        stl 2          ; local[2] = j
+ldc ARR
+ldnl 2
+stl 0
+ldc ARR
+ldnl 3
+ldl 0
+sub
+brlz SWAP2_23
+br CONT2_23
+SWAP2_23:
+    ldc ARR
+    ldnl 3
+    ldc ARR
+    stnl 2
+    ldl 0
+    ldc ARR
+    stnl 3
+CONT2_23:
 
-inner:
-        ; if j >= n-1-i → next_outer
+; --- PASS 3: compare (0,1), (1,2) ---
+ldc ARR
+ldnl 0
+stl 0
+ldc ARR
+ldnl 1
+ldl 0
+sub
+brlz SWAP3_01
+br CONT3_01
+SWAP3_01:
+    ldc ARR
+    ldnl 1
+    ldc ARR
+    stnl 0
+    ldl 0
+    ldc ARR
+    stnl 1
+CONT3_01:
 
-        ldl 0
-        ldc 1
-        sub            ; A = n - 1
-        ldl 1
-        sub            ; A = n - 1 - i
-        ldl 2
-        sub            ; A = (n-1-i) - j
-        brlz next_outer
-        brz  next_outer
+ldc ARR
+ldnl 1
+stl 0
+ldc ARR
+ldnl 2
+ldl 0
+sub
+brlz SWAP3_12
+br CONT3_12
+SWAP3_12:
+    ldc ARR
+    ldnl 2
+    ldc ARR
+    stnl 1
+    ldl 0
+    ldc ARR
+    stnl 2
+CONT3_12:
 
-        ; load a = arr[j]
+; --- PASS 4: compare (0,1) ---
+ldc ARR
+ldnl 0
+stl 0
+ldc ARR
+ldnl 1
+ldl 0
+sub
+brlz SWAP4_01
+br CONT4_01
+SWAP4_01:
+    ldc ARR
+    ldnl 1
+    ldc ARR
+    stnl 0
+    ldl 0
+    ldc ARR
+    stnl 1
+CONT4_01:
 
-        ldl 3
-        ldl 2
-        add
-        ldnl 0
-        stl 5          ; local[5] = a
+; done
+HALT
 
-        ; load b = arr[j+1]
-
-        ldl 3
-        ldl 2
-        ldc 1
-        add
-        add
-        ldnl 0
-        stl 6          ; local[6] = b
-
-        ; if a <= b → skip swap
-
-        ldl 5
-        ldl 6
-        sub            ; a - b
-        brlz no_swap
-        brz  no_swap
-
-        ; arr[j] = b
-
-        ldl 3
-        ldl 2
-        add
-        ldl 6
-        stnl 0
-
-        ; arr[j+1] = a
-
-        ldl 3
-        ldl 2
-        ldc 1
-        add
-        add
-        ldl 5
-        stnl 0
-
-no_swap:
-        ; j++
-
-        ldl 2
-        ldc 1
-        add
-        stl 2
-        br inner
-
-next_outer:
-        ; i++
-
-        ldl 1
-        ldc 1
-        add
-        stl 1
-        br outer
-
-done:
-        HALT
-        br done        ; safety trap
-
-
-; -------- data --------
-
-arr:    data 4
-        data 1
-        data 5
-        data 2
-        data 3
+; --- data region ---
+ARR:
+data 5
+data 1
+data 4
+data 2
+data 3

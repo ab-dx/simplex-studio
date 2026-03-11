@@ -4,7 +4,7 @@
 #define NUM_INSTR 20
 
 InstructionDef instr_table[NUM_INSTR] = {
-    {"data", -1, HAS_OPERAND}, // Special instruction
+    {"data", -1, HAS_OPERAND}, /* Special instruction */
     {"ldc", 0, HAS_OPERAND},    {"adc", 1, HAS_OPERAND},
     {"ldl", 2, HAS_OPERAND},    {"stl", 3, HAS_OPERAND},
     {"ldnl", 4, HAS_OPERAND},   {"stnl", 5, HAS_OPERAND},
@@ -15,15 +15,15 @@ InstructionDef instr_table[NUM_INSTR] = {
     {"return", 14, NO_OPERAND}, {"brz", 15, HAS_OPERAND},
     {"brlz", 16, HAS_OPERAND},  {"br", 17, HAS_OPERAND},
     {"HALT", 18, NO_OPERAND},
-}; // SIMPLEX Instruction set defined
+}; /* SIMPLEX Instruction set defined */
 
 InstructionDef *lookup_instruction(char *mnemonic) {
   for (int i = 0; i < NUM_INSTR;
-       i++) { // For each instruction in the defined table
+       i++) { /* For each instruction in the defined table */
     if (strcmp(mnemonic, instr_table[i].mnemonic) ==
-        0) {                    // Check for instruction with matching mnemonic
-      return &(instr_table[i]); // Return matching instruction
+        0) { /* Check for instruction with matching mnemonic */
+      return &(instr_table[i]); /* Return matching instruction */
     }
   }
-  return NULL; // Return NULL if not found
+  return NULL; /* Return NULL if not found */
 }
