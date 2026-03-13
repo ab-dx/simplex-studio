@@ -1,0 +1,41 @@
+; test3.asm
+; Test SET
+val: SET 75
+Label: 'val'
+Mnemonic: 'SET'
+Immediate: '75'
+ldc val
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'val'
+adc val2
+Label: ''
+Mnemonic: 'adc'
+Immediate: 'val2'
+val2: SET 66
+Label: 'val2'
+Mnemonic: 'SET'
+Immediate: '66'
+HALT
+Label: ''
+Mnemonic: 'HALT'
+Immediate: '(null)'
+
+AssemblerContext:
+	Symbol count: 2
+	Line count: 3
+Lines:
+0. Line:
+	Original line: ldc val
+	PC: 0	Defined Label: val	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: val
+1. Line:
+	Original line: adc val2
+	PC: 1	Defined Label: 	Mnemonic: 'adc'	Operand Type: LABEL_REF	Op value: 0	Op Label: val2
+2. Line:
+	Original line: HALT
+	PC: 2	Defined Label: val2	Mnemonic: 'HALT'	Operand Type: NONE	Op value: 0	Op Label: 
+Symbols:
+0. Symbol:
+	Name: val	Address: 75
+1. Symbol:
+	Name: val2	Address: 66

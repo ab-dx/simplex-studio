@@ -1,0 +1,86 @@
+; test1.asm
+label: ; an unused label
+Label: 'label'
+Mnemonic: '(null)'
+Immediate: '(null)'
+ldc label
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'label'
+ldc -5
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '-5'
+ldc +5
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '+5'
+loop: br loop ; an infinite loop
+Label: 'loop'
+Mnemonic: 'br'
+Immediate: 'loop'
+br next ;offset should be zero
+Label: ''
+Mnemonic: 'br'
+Immediate: 'next'
+next:
+Label: 'next'
+Mnemonic: '(null)'
+Immediate: '(null)'
+ldc loop ; load code address
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'loop'
+ldc var1 ; forward ref
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'var1'
+var1: data 0 ; a variable
+Label: 'var1'
+Mnemonic: 'data'
+Immediate: '0'
+HALT
+Label: ''
+Mnemonic: 'HALT'
+Immediate: '(null)'
+
+AssemblerContext:
+	Symbol count: 4
+	Line count: 9
+Lines:
+0. Line:
+	Original line: ldc label
+	PC: 0	Defined Label: label	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: label
+1. Line:
+	Original line: ldc -5
+	PC: 1	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: -5	Op Label: 
+2. Line:
+	Original line: ldc +5
+	PC: 2	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 5	Op Label: 
+3. Line:
+	Original line: loop: br loop ; an infinite loop
+	PC: 3	Defined Label: loop	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: loop
+4. Line:
+	Original line: br next ;offset should be zero
+	PC: 4	Defined Label: 	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: next
+5. Line:
+	Original line: ldc loop ; load code address
+	PC: 5	Defined Label: next	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: loop
+6. Line:
+	Original line: ldc var1 ; forward ref
+	PC: 6	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: var1
+7. Line:
+	Original line: var1: data 0 ; a variable
+	PC: 7	Defined Label: var1	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 0	Op Label: 
+8. Line:
+	Original line: HALT
+	PC: 8	Defined Label: 	Mnemonic: 'HALT'	Operand Type: NONE	Op value: 0	Op Label: 
+Symbols:
+0. Symbol:
+	Name: label	Address: 0
+1. Symbol:
+	Name: loop	Address: 3
+2. Symbol:
+	Name: next	Address: 5
+3. Symbol:
+	Name: var1	Address: 7

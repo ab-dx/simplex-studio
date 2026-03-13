@@ -1,0 +1,560 @@
+        adj 7
+Label: ''
+Mnemonic: 'adj'
+Immediate: '7'
+
+        ; n = 5
+        ldc 5
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '5'
+        stl 0
+Label: ''
+Mnemonic: 'stl'
+Immediate: '0'
+
+        ; base = &arr
+        ldc arr
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'arr'
+        stl 3
+Label: ''
+Mnemonic: 'stl'
+Immediate: '3'
+
+        ; i = 0
+        ldc 0
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '0'
+        stl 1
+Label: ''
+Mnemonic: 'stl'
+Immediate: '1'
+
+outer:
+Label: 'outer'
+Mnemonic: '(null)'
+Immediate: '(null)'
+        ; if i >= n-1 → done
+
+        ldl 0          ; A = n
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '0'
+        ldc 1
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '1'
+        sub            ; A = n - 1
+Label: ''
+Mnemonic: 'sub'
+Immediate: '(null)'
+        ldl 1          ; push (n-1), A=i
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '1'
+        sub            ; A = (n-1) - i
+Label: ''
+Mnemonic: 'sub'
+Immediate: '(null)'
+        brz done       ; if zero → finished
+Label: ''
+Mnemonic: 'brz'
+Immediate: 'done'
+
+        ; j = 0
+        ldc 0
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '0'
+        stl 2
+Label: ''
+Mnemonic: 'stl'
+Immediate: '2'
+
+inner:
+Label: 'inner'
+Mnemonic: '(null)'
+Immediate: '(null)'
+        ; if j >= n-1-i → next outer
+
+        ldl 0          ; A=n
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '0'
+        ldc 1
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '1'
+        sub            ; A=n-1
+Label: ''
+Mnemonic: 'sub'
+Immediate: '(null)'
+        ldl 1
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '1'
+        sub            ; A=n-1-i
+Label: ''
+Mnemonic: 'sub'
+Immediate: '(null)'
+        ldl 2
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '2'
+        sub            ; A=(n-1-i)-j
+Label: ''
+Mnemonic: 'sub'
+Immediate: '(null)'
+        brz next_outer
+Label: ''
+Mnemonic: 'brz'
+Immediate: 'next_outer'
+
+        ; load a = arr[j]
+
+        ldl 3          ; base
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '3'
+        ldl 2
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '2'
+        add            ; base + j
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+        ldnl 0
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+        stl 5
+Label: ''
+Mnemonic: 'stl'
+Immediate: '5'
+
+        ; load b = arr[j+1]
+
+        ldl 3
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '3'
+        ldl 2
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '2'
+        ldc 1
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '1'
+        add
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+        add            ; base + j + 1
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+        ldnl 0
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+        stl 6
+Label: ''
+Mnemonic: 'stl'
+Immediate: '6'
+
+        ; if a <= b → skip swap
+
+        ldl 5
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '5'
+        ldl 6
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '6'
+        sub
+Label: ''
+Mnemonic: 'sub'
+Immediate: '(null)'
+        brlz no_swap
+Label: ''
+Mnemonic: 'brlz'
+Immediate: 'no_swap'
+        brz no_swap
+Label: ''
+Mnemonic: 'brz'
+Immediate: 'no_swap'
+
+        ; arr[j] = b
+
+        ldl 3
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '3'
+        ldl 2
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '2'
+        add
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+        ldl 6
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '6'
+        stnl 0
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+        ; arr[j+1] = a
+
+        ldl 3
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '3'
+        ldl 2
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '2'
+        ldc 1
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '1'
+        add
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+        add
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+        ldl 5
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '5'
+        stnl 0
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+no_swap:
+Label: 'no_swap'
+Mnemonic: '(null)'
+Immediate: '(null)'
+        ; j++
+
+        ldl 2
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '2'
+        ldc 1
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '1'
+        add
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+        stl 2
+Label: ''
+Mnemonic: 'stl'
+Immediate: '2'
+        br inner
+Label: ''
+Mnemonic: 'br'
+Immediate: 'inner'
+
+next_outer:
+Label: 'next_outer'
+Mnemonic: '(null)'
+Immediate: '(null)'
+        ; i++
+
+        ldl 1
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '1'
+        ldc 1
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '1'
+        add
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+        stl 1
+Label: ''
+Mnemonic: 'stl'
+Immediate: '1'
+        br outer
+Label: ''
+Mnemonic: 'br'
+Immediate: 'outer'
+
+done:
+Label: 'done'
+Mnemonic: '(null)'
+Immediate: '(null)'
+        HALT
+Label: ''
+Mnemonic: 'HALT'
+Immediate: '(null)'
+        br done     ; safety trap
+Label: ''
+Mnemonic: 'br'
+Immediate: 'done'
+
+; -------- data --------
+
+arr:    data 4
+Label: 'arr'
+Mnemonic: 'data'
+Immediate: '4'
+        data 1
+Label: ''
+Mnemonic: 'data'
+Immediate: '1'
+        data 5
+Label: ''
+Mnemonic: 'data'
+Immediate: '5'
+        data 2
+Label: ''
+Mnemonic: 'data'
+Immediate: '2'
+        data 3
+Label: ''
+Mnemonic: 'data'
+Immediate: '3'
+
+AssemblerContext:
+	Symbol count: 6
+	Line count: 69
+Lines:
+0. Line:
+	Original line: adj 7
+	PC: 0	Defined Label: 	Mnemonic: 'adj'	Operand Type: NUMBER	Op value: 7	Op Label: 
+1. Line:
+	Original line: ldc 5
+	PC: 1	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 5	Op Label: 
+2. Line:
+	Original line: stl 0
+	PC: 2	Defined Label: 	Mnemonic: 'stl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+3. Line:
+	Original line: ldc arr
+	PC: 3	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: arr
+4. Line:
+	Original line: stl 3
+	PC: 4	Defined Label: 	Mnemonic: 'stl'	Operand Type: NUMBER	Op value: 3	Op Label: 
+5. Line:
+	Original line: ldc 0
+	PC: 5	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 0	Op Label: 
+6. Line:
+	Original line: stl 1
+	PC: 6	Defined Label: 	Mnemonic: 'stl'	Operand Type: NUMBER	Op value: 1	Op Label: 
+7. Line:
+	Original line: ldl 0          ; A = n
+	PC: 7	Defined Label: outer	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+8. Line:
+	Original line: ldc 1
+	PC: 8	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+9. Line:
+	Original line: sub            ; A = n - 1
+	PC: 9	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
+10. Line:
+	Original line: ldl 1          ; push (n-1), A=i
+	PC: 10	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 1	Op Label: 
+11. Line:
+	Original line: sub            ; A = (n-1) - i
+	PC: 11	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
+12. Line:
+	Original line: brz done       ; if zero → finished
+	PC: 12	Defined Label: 	Mnemonic: 'brz'	Operand Type: LABEL_REF	Op value: 0	Op Label: done
+13. Line:
+	Original line: ldc 0
+	PC: 13	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 0	Op Label: 
+14. Line:
+	Original line: stl 2
+	PC: 14	Defined Label: 	Mnemonic: 'stl'	Operand Type: NUMBER	Op value: 2	Op Label: 
+15. Line:
+	Original line: ldl 0          ; A=n
+	PC: 15	Defined Label: inner	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+16. Line:
+	Original line: ldc 1
+	PC: 16	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+17. Line:
+	Original line: sub            ; A=n-1
+	PC: 17	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
+18. Line:
+	Original line: ldl 1
+	PC: 18	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 1	Op Label: 
+19. Line:
+	Original line: sub            ; A=n-1-i
+	PC: 19	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
+20. Line:
+	Original line: ldl 2
+	PC: 20	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 2	Op Label: 
+21. Line:
+	Original line: sub            ; A=(n-1-i)-j
+	PC: 21	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
+22. Line:
+	Original line: brz next_outer
+	PC: 22	Defined Label: 	Mnemonic: 'brz'	Operand Type: LABEL_REF	Op value: 0	Op Label: next_outer
+23. Line:
+	Original line: ldl 3          ; base
+	PC: 23	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 3	Op Label: 
+24. Line:
+	Original line: ldl 2
+	PC: 24	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 2	Op Label: 
+25. Line:
+	Original line: add            ; base + j
+	PC: 25	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+26. Line:
+	Original line: ldnl 0
+	PC: 26	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+27. Line:
+	Original line: stl 5
+	PC: 27	Defined Label: 	Mnemonic: 'stl'	Operand Type: NUMBER	Op value: 5	Op Label: 
+28. Line:
+	Original line: ldl 3
+	PC: 28	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 3	Op Label: 
+29. Line:
+	Original line: ldl 2
+	PC: 29	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 2	Op Label: 
+30. Line:
+	Original line: ldc 1
+	PC: 30	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+31. Line:
+	Original line: add
+	PC: 31	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+32. Line:
+	Original line: add            ; base + j + 1
+	PC: 32	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+33. Line:
+	Original line: ldnl 0
+	PC: 33	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+34. Line:
+	Original line: stl 6
+	PC: 34	Defined Label: 	Mnemonic: 'stl'	Operand Type: NUMBER	Op value: 6	Op Label: 
+35. Line:
+	Original line: ldl 5
+	PC: 35	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 5	Op Label: 
+36. Line:
+	Original line: ldl 6
+	PC: 36	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 6	Op Label: 
+37. Line:
+	Original line: sub
+	PC: 37	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
+38. Line:
+	Original line: brlz no_swap
+	PC: 38	Defined Label: 	Mnemonic: 'brlz'	Operand Type: LABEL_REF	Op value: 0	Op Label: no_swap
+39. Line:
+	Original line: brz no_swap
+	PC: 39	Defined Label: 	Mnemonic: 'brz'	Operand Type: LABEL_REF	Op value: 0	Op Label: no_swap
+40. Line:
+	Original line: ldl 3
+	PC: 40	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 3	Op Label: 
+41. Line:
+	Original line: ldl 2
+	PC: 41	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 2	Op Label: 
+42. Line:
+	Original line: add
+	PC: 42	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+43. Line:
+	Original line: ldl 6
+	PC: 43	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 6	Op Label: 
+44. Line:
+	Original line: stnl 0
+	PC: 44	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+45. Line:
+	Original line: ldl 3
+	PC: 45	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 3	Op Label: 
+46. Line:
+	Original line: ldl 2
+	PC: 46	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 2	Op Label: 
+47. Line:
+	Original line: ldc 1
+	PC: 47	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+48. Line:
+	Original line: add
+	PC: 48	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+49. Line:
+	Original line: add
+	PC: 49	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+50. Line:
+	Original line: ldl 5
+	PC: 50	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 5	Op Label: 
+51. Line:
+	Original line: stnl 0
+	PC: 51	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+52. Line:
+	Original line: ldl 2
+	PC: 52	Defined Label: no_swap	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 2	Op Label: 
+53. Line:
+	Original line: ldc 1
+	PC: 53	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+54. Line:
+	Original line: add
+	PC: 54	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+55. Line:
+	Original line: stl 2
+	PC: 55	Defined Label: 	Mnemonic: 'stl'	Operand Type: NUMBER	Op value: 2	Op Label: 
+56. Line:
+	Original line: br inner
+	PC: 56	Defined Label: 	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: inner
+57. Line:
+	Original line: ldl 1
+	PC: 57	Defined Label: next_outer	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 1	Op Label: 
+58. Line:
+	Original line: ldc 1
+	PC: 58	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+59. Line:
+	Original line: add
+	PC: 59	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+60. Line:
+	Original line: stl 1
+	PC: 60	Defined Label: 	Mnemonic: 'stl'	Operand Type: NUMBER	Op value: 1	Op Label: 
+61. Line:
+	Original line: br outer
+	PC: 61	Defined Label: 	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: outer
+62. Line:
+	Original line: HALT
+	PC: 62	Defined Label: done	Mnemonic: 'HALT'	Operand Type: NONE	Op value: 0	Op Label: 
+63. Line:
+	Original line: br done     ; safety trap
+	PC: 63	Defined Label: 	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: done
+64. Line:
+	Original line: arr:    data 4
+	PC: 64	Defined Label: arr	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 4	Op Label: 
+65. Line:
+	Original line: data 1
+	PC: 65	Defined Label: 	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 1	Op Label: 
+66. Line:
+	Original line: data 5
+	PC: 66	Defined Label: 	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 5	Op Label: 
+67. Line:
+	Original line: data 2
+	PC: 67	Defined Label: 	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 2	Op Label: 
+68. Line:
+	Original line: data 3
+	PC: 68	Defined Label: 	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 3	Op Label: 
+Symbols:
+0. Symbol:
+	Name: outer	Address: 7
+1. Symbol:
+	Name: inner	Address: 15
+2. Symbol:
+	Name: no_swap	Address: 52
+3. Symbol:
+	Name: next_outer	Address: 57
+4. Symbol:
+	Name: done	Address: 62
+5. Symbol:
+	Name: arr	Address: 64

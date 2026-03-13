@@ -1,0 +1,47 @@
+br start
+Label: ''
+Mnemonic: 'br'
+Immediate: 'start'
+data 0x5ab4
+Label: ''
+Mnemonic: 'data'
+Immediate: '0x5ab4'
+start:
+Label: 'start'
+Mnemonic: '(null)'
+Immediate: '(null)'
+ldc 0x65
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '0x65'
+adc 0x9d
+Label: ''
+Mnemonic: 'adc'
+Immediate: '0x9d'
+HALT
+Label: ''
+Mnemonic: 'HALT'
+Immediate: '(null)'
+
+AssemblerContext:
+	Symbol count: 1
+	Line count: 5
+Lines:
+0. Line:
+	Original line: br start
+	PC: 0	Defined Label: 	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: start
+1. Line:
+	Original line: data 0x5ab4
+	PC: 1	Defined Label: 	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 23220	Op Label: 
+2. Line:
+	Original line: ldc 0x65
+	PC: 2	Defined Label: start	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 101	Op Label: 
+3. Line:
+	Original line: adc 0x9d
+	PC: 3	Defined Label: 	Mnemonic: 'adc'	Operand Type: NUMBER	Op value: 157	Op Label: 
+4. Line:
+	Original line: HALT
+	PC: 4	Defined Label: 	Mnemonic: 'HALT'	Operand Type: NONE	Op value: 0	Op Label: 
+Symbols:
+0. Symbol:
+	Name: start	Address: 2

@@ -1,0 +1,83 @@
+        adj 4
+Label: ''
+Mnemonic: 'adj'
+Immediate: '4'
+
+        ; load base = address of pad (we know pad is after code)
+        ldc pad
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'pad'
+        stl 0
+Label: ''
+Mnemonic: 'stl'
+Immediate: '0'
+
+        ; compute base + 0 and write value 99 there via stnl
+        ldl 0
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '0'
+        ldl 0
+Label: ''
+Mnemonic: 'ldl'
+Immediate: '0'
+        add
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+        ldc 99
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '99'
+        stnl 0
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+        HALT
+Label: ''
+Mnemonic: 'HALT'
+Immediate: '(null)'
+pad:    data 0
+Label: 'pad'
+Mnemonic: 'data'
+Immediate: '0'
+
+AssemblerContext:
+	Symbol count: 1
+	Line count: 10
+Lines:
+0. Line:
+	Original line: adj 4
+	PC: 0	Defined Label: 	Mnemonic: 'adj'	Operand Type: NUMBER	Op value: 4	Op Label: 
+1. Line:
+	Original line: ldc pad
+	PC: 1	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: pad
+2. Line:
+	Original line: stl 0
+	PC: 2	Defined Label: 	Mnemonic: 'stl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+3. Line:
+	Original line: ldl 0
+	PC: 3	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+4. Line:
+	Original line: ldl 0
+	PC: 4	Defined Label: 	Mnemonic: 'ldl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+5. Line:
+	Original line: add
+	PC: 5	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+6. Line:
+	Original line: ldc 99
+	PC: 6	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 99	Op Label: 
+7. Line:
+	Original line: stnl 0
+	PC: 7	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+8. Line:
+	Original line: HALT
+	PC: 8	Defined Label: 	Mnemonic: 'HALT'	Operand Type: NONE	Op value: 0	Op Label: 
+9. Line:
+	Original line: pad:    data 0
+	PC: 9	Defined Label: pad	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 0	Op Label: 
+Symbols:
+0. Symbol:
+	Name: pad	Address: 9
