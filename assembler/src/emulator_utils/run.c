@@ -16,7 +16,7 @@ void run(EmulatorContext *ctx) {
       if (!ctx->json_mode) {
         printf("\nERROR: Execution Limit Exceeded! Infinite loop detected.\n");
       } else {
-        fprintf(stderr, "{\"error\": \"Timeout: Execution Limit Exceeded\"}]");
+        fprintf(stderr, "{\"error\": \"Timeout: Execution Limit Exceeded\"}");
       }
       return;
     }

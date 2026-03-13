@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Main Background (#151515) */
+    --background: 0 0% 8%;
+    /* Soft White Foreground (#e8e8e8) */
+    --foreground: 0 0% 91%;
+
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 91%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 91%;
+
+    /* Jellybeans Blue (#8fbfdc) */
+    --primary: 202 52% 71%;
+    --primary-foreground: 0 0% 8%;
+
+    /* Jellybeans Grey/Brown (#333333) */
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 91%;
+
+    /* Muted Text (#888888) */
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 53%;
+
+    /* Jellybeans Yellow (#ffb964) */
+    --accent: 33 100% 70%;
+    --accent-foreground: 0 0% 8%;
+
+    /* Jellybeans Red (#cf6a4c) */
+    --destructive: 13 58% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Border and Input (#444444) */
+    --border: 0 0% 27%;
+    --input: 0 0% 27%;
+
+    /* Ring (Primary Blue) */
+    --ring: 202 52% 71%;
+
+    --radius: 0.5rem;
+  }
+
+  /* Since Jellybeans is inherently a dark theme, 
+     the .dark class mirrors the root or provides 
+     slighter deeper offsets if needed.
+  */
+  .dark {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 91%;
+    --card: 0 0% 9%;
+    --border: 0 0% 22%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'JetBrains Mono', monospace;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Scrollbar styling to match the Jellybeans vibe */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--secondary));
+  border: 2px solid hsl(var(--background));
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}

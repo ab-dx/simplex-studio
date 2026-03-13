@@ -4,8 +4,10 @@ void assemble_request(char *assembly_code, int socket) {
 
   int server_to_asm[2];
   int asm_to_server[2];
+  int asm_to_server_err[2];
   pipe(server_to_asm);
   pipe(asm_to_server);
+  pipe(asm_to_server_err);
 
   // Fork a new assembler for this request
   pid_t pid = fork();
@@ -14,12 +16,13 @@ void assemble_request(char *assembly_code, int socket) {
     // CHILD PROCESS
     dup2(server_to_asm[0], STDIN_FILENO);
     dup2(asm_to_server[1], STDOUT_FILENO);
-    // dup2(asm_to_server[1], STDERR_FILENO);
+    dup2(asm_to_server_err[1], STDERR_FILENO);
     close(server_to_asm[0]);
     close(server_to_asm[1]);
     close(asm_to_server[0]);
     close(asm_to_server[1]);
-
+    close(asm_to_server_err[0]);
+    close(asm_to_server_err[1]);
     execl("../assembler/build/target/asm", "../assembler/build/target/asm",
           "-i", NULL);
     perror("execl failed");
@@ -35,6 +38,7 @@ void assemble_request(char *assembly_code, int socket) {
     printf("Bytes written to assembler: %d\n", written);
     close(server_to_asm[1]);
     close(server_to_asm[1]);
+    close(asm_to_server_err[1]);
 
     // Read the binary response
     char buffer[500 * 1024] = {0}; // 500kb buffer for program
@@ -52,19 +56,56 @@ void assemble_request(char *assembly_code, int socket) {
     printf("Bytes read from assembler: %d\n", count);
     close(asm_to_server[0]); // Clean up read pipe
 
-    // Format and send HTTP response
-    char headers[256];
-    int header_len = snprintf(headers, sizeof(headers),
-                              "HTTP/1.1 200 OK\r\n"
-                              "Access-Control-Allow-Origin: *\r\n"
-                              "Content-Type: application/octet-stream\r\n"
-                              "Content-Length: %d\r\n"
-                              "\r\n",
-                              count);
-    write(socket, headers, header_len);
-    write(socket, buffer, count);
-    waitpid(pid, NULL, 0);
+    // Check for errors
+    char err_buffer[1024] = {0}; // 500kb buffer for program
+    int err_count = 0;
+    int err_bytes_read;
+    while ((err_bytes_read =
+                read(asm_to_server_err[0], err_buffer + err_count, 4)) > 0) {
+      err_count += err_bytes_read;
+      if (err_count >= sizeof(err_buffer) - 1) {
+        printf("WARNING: Assembler errors exceeded buffer limit. Terminating "
+               "child process.\n");
+        kill(pid, SIGKILL);
+        break;
+      }
+    }
+    close(asm_to_server_err[0]); // Clean up read pipe
 
-    close(socket);
+    printf("ERROR BUFFER: %s", err_buffer);
+
+    if (err_buffer[0] != 0) {
+      // Format and send HTTP response
+      char error[1040];
+      sprintf(error, "{\"error\": \"%s\"}", err_buffer);
+      char headers[256];
+      int header_len = snprintf(headers, sizeof(headers),
+                                "HTTP/1.1 400 Bad Request\r\n"
+                                "Access-Control-Allow-Origin: *\r\n"
+                                "Content-Type: application/json\r\n"
+                                "Content-Length: %d\r\n"
+                                "\r\n",
+                                1040);
+      write(socket, headers, header_len);
+      write(socket, error, 1040);
+      waitpid(pid, NULL, 0);
+
+      close(socket);
+    } else {
+      // Format and send HTTP response
+      char headers[256];
+      int header_len = snprintf(headers, sizeof(headers),
+                                "HTTP/1.1 200 OK\r\n"
+                                "Access-Control-Allow-Origin: *\r\n"
+                                "Content-Type: application/octet-stream\r\n"
+                                "Content-Length: %d\r\n"
+                                "\r\n",
+                                count);
+      write(socket, headers, header_len);
+      write(socket, buffer, count);
+      waitpid(pid, NULL, 0);
+
+      close(socket);
+    }
   }
 }
