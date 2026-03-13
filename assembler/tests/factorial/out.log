@@ -1,0 +1,420 @@
+fact_loop:
+Label: 'fact_loop'
+Mnemonic: '(null)'
+Immediate: '(null)'
+    ;  Stop if n == 0 
+    ldc n
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'n'
+    ldnl 0
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+    brz end_fact
+Label: ''
+Mnemonic: 'brz'
+Immediate: 'end_fact'
+
+    ;  Setup Multiplication (prod = 0) 
+    ldc 0
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '0'
+    ldc prod
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'prod'
+    stnl 0
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+    ;  Setup Multiplication (mul_a = result) 
+    ldc result
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'result'
+    ldnl 0
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+    ldc mul_a
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'mul_a'
+    stnl 0
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+    ;  Setup Multiplication (mul_b = n) 
+    ldc n
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'n'
+    ldnl 0
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+    ldc mul_b
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'mul_b'
+    stnl 0
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+mul_loop:
+Label: 'mul_loop'
+Mnemonic: '(null)'
+Immediate: '(null)'
+    ;  Stop adding if mul_b == 0 
+    ldc mul_b
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'mul_b'
+    ldnl 0
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+    brz end_mul
+Label: ''
+Mnemonic: 'brz'
+Immediate: 'end_mul'
+
+    ;  prod = prod + mul_a 
+    ldc prod
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'prod'
+    ldnl 0      ; A = prod
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+    ldc mul_a
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'mul_a'
+    ldnl 0      ; A = mul_a, B = prod
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+    add         ; A = mul_a + prod
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+    ldc prod    ; A = addr(prod), B = mul_a + prod
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'prod'
+    stnl 0      ; prod = B
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+    ;  mul_b = mul_b - 1 
+    ldc mul_b
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'mul_b'
+    ldnl 0      ; A = mul_b
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+    ldc 1       ; A = 1, B = mul_b
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '1'
+    sub         ; A = B - A (mul_b - 1)
+Label: ''
+Mnemonic: 'sub'
+Immediate: '(null)'
+    ldc mul_b   ; A = addr(mul_b), B = mul_b - 1
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'mul_b'
+    stnl 0      ; mul_b = B
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+    br mul_loop
+Label: ''
+Mnemonic: 'br'
+Immediate: 'mul_loop'
+
+end_mul:
+Label: 'end_mul'
+Mnemonic: '(null)'
+Immediate: '(null)'
+    ;  result = prod 
+    ldc prod
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'prod'
+    ldnl 0
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+    ldc result
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'result'
+    stnl 0
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+    ;  n = n - 1 
+    ldc n
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'n'
+    ldnl 0      ; A = n
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+    ldc 1       ; A = 1, B = n
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '1'
+    sub         ; A = B - A (n - 1)
+Label: ''
+Mnemonic: 'sub'
+Immediate: '(null)'
+    ldc n       ; A = addr(n), B = n - 1
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'n'
+    stnl 0      ; n = B
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+    br fact_loop
+Label: ''
+Mnemonic: 'br'
+Immediate: 'fact_loop'
+
+end_fact:
+Label: 'end_fact'
+Mnemonic: '(null)'
+Immediate: '(null)'
+    HALT
+Label: ''
+Mnemonic: 'HALT'
+Immediate: '(null)'
+
+;  DATA SECTION 
+n:
+Label: 'n'
+Mnemonic: '(null)'
+Immediate: '(null)'
+data 5      ; Number to calculate factorial for
+Label: ''
+Mnemonic: 'data'
+Immediate: '5'
+result:
+Label: 'result'
+Mnemonic: '(null)'
+Immediate: '(null)'
+data 1      ; Running product (starts at 1)
+Label: ''
+Mnemonic: 'data'
+Immediate: '1'
+
+; Variables for software multiplication
+mul_a:
+Label: 'mul_a'
+Mnemonic: '(null)'
+Immediate: '(null)'
+data 0
+Label: ''
+Mnemonic: 'data'
+Immediate: '0'
+mul_b:
+Label: 'mul_b'
+Mnemonic: '(null)'
+Immediate: '(null)'
+data 0
+Label: ''
+Mnemonic: 'data'
+Immediate: '0'
+prod:
+Label: 'prod'
+Mnemonic: '(null)'
+Immediate: '(null)'
+data 0
+Label: ''
+Mnemonic: 'data'
+Immediate: '0'
+
+AssemblerContext:
+	Symbol count: 9
+	Line count: 48
+Lines:
+0. Line:
+	Original line: ldc n
+	PC: 0	Defined Label: fact_loop	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: n
+1. Line:
+	Original line: ldnl 0
+	PC: 1	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+2. Line:
+	Original line: brz end_fact
+	PC: 2	Defined Label: 	Mnemonic: 'brz'	Operand Type: LABEL_REF	Op value: 0	Op Label: end_fact
+3. Line:
+	Original line: ldc 0
+	PC: 3	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 0	Op Label: 
+4. Line:
+	Original line: ldc prod
+	PC: 4	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: prod
+5. Line:
+	Original line: stnl 0
+	PC: 5	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+6. Line:
+	Original line: ldc result
+	PC: 6	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: result
+7. Line:
+	Original line: ldnl 0
+	PC: 7	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+8. Line:
+	Original line: ldc mul_a
+	PC: 8	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: mul_a
+9. Line:
+	Original line: stnl 0
+	PC: 9	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+10. Line:
+	Original line: ldc n
+	PC: 10	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: n
+11. Line:
+	Original line: ldnl 0
+	PC: 11	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+12. Line:
+	Original line: ldc mul_b
+	PC: 12	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: mul_b
+13. Line:
+	Original line: stnl 0
+	PC: 13	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+14. Line:
+	Original line: ldc mul_b
+	PC: 14	Defined Label: mul_loop	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: mul_b
+15. Line:
+	Original line: ldnl 0
+	PC: 15	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+16. Line:
+	Original line: brz end_mul
+	PC: 16	Defined Label: 	Mnemonic: 'brz'	Operand Type: LABEL_REF	Op value: 0	Op Label: end_mul
+17. Line:
+	Original line: ldc prod
+	PC: 17	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: prod
+18. Line:
+	Original line: ldnl 0      ; A = prod
+	PC: 18	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+19. Line:
+	Original line: ldc mul_a
+	PC: 19	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: mul_a
+20. Line:
+	Original line: ldnl 0      ; A = mul_a, B = prod
+	PC: 20	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+21. Line:
+	Original line: add         ; A = mul_a + prod
+	PC: 21	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+22. Line:
+	Original line: ldc prod    ; A = addr(prod), B = mul_a + prod
+	PC: 22	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: prod
+23. Line:
+	Original line: stnl 0      ; prod = B
+	PC: 23	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+24. Line:
+	Original line: ldc mul_b
+	PC: 24	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: mul_b
+25. Line:
+	Original line: ldnl 0      ; A = mul_b
+	PC: 25	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+26. Line:
+	Original line: ldc 1       ; A = 1, B = mul_b
+	PC: 26	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+27. Line:
+	Original line: sub         ; A = B - A (mul_b - 1)
+	PC: 27	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
+28. Line:
+	Original line: ldc mul_b   ; A = addr(mul_b), B = mul_b - 1
+	PC: 28	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: mul_b
+29. Line:
+	Original line: stnl 0      ; mul_b = B
+	PC: 29	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+30. Line:
+	Original line: br mul_loop
+	PC: 30	Defined Label: 	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: mul_loop
+31. Line:
+	Original line: ldc prod
+	PC: 31	Defined Label: end_mul	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: prod
+32. Line:
+	Original line: ldnl 0
+	PC: 32	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+33. Line:
+	Original line: ldc result
+	PC: 33	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: result
+34. Line:
+	Original line: stnl 0
+	PC: 34	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+35. Line:
+	Original line: ldc n
+	PC: 35	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: n
+36. Line:
+	Original line: ldnl 0      ; A = n
+	PC: 36	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+37. Line:
+	Original line: ldc 1       ; A = 1, B = n
+	PC: 37	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+38. Line:
+	Original line: sub         ; A = B - A (n - 1)
+	PC: 38	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
+39. Line:
+	Original line: ldc n       ; A = addr(n), B = n - 1
+	PC: 39	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: n
+40. Line:
+	Original line: stnl 0      ; n = B
+	PC: 40	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+41. Line:
+	Original line: br fact_loop
+	PC: 41	Defined Label: 	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: fact_loop
+42. Line:
+	Original line: HALT
+	PC: 42	Defined Label: end_fact	Mnemonic: 'HALT'	Operand Type: NONE	Op value: 0	Op Label: 
+43. Line:
+	Original line: data 5      ; Number to calculate factorial for
+	PC: 43	Defined Label: n	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 5	Op Label: 
+44. Line:
+	Original line: data 1      ; Running product (starts at 1)
+	PC: 44	Defined Label: result	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 1	Op Label: 
+45. Line:
+	Original line: data 0
+	PC: 45	Defined Label: mul_a	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 0	Op Label: 
+46. Line:
+	Original line: data 0
+	PC: 46	Defined Label: mul_b	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 0	Op Label: 
+47. Line:
+	Original line: data 0
+	PC: 47	Defined Label: prod	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 0	Op Label: 
+Symbols:
+0. Symbol:
+	Name: fact_loop	Address: 0
+1. Symbol:
+	Name: mul_loop	Address: 14
+2. Symbol:
+	Name: end_mul	Address: 31
+3. Symbol:
+	Name: end_fact	Address: 42
+4. Symbol:
+	Name: n	Address: 43
+5. Symbol:
+	Name: result	Address: 44
+6. Symbol:
+	Name: mul_a	Address: 45
+7. Symbol:
+	Name: mul_b	Address: 46
+8. Symbol:
+	Name: prod	Address: 47
