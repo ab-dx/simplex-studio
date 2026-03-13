@@ -7,6 +7,10 @@ void run(EmulatorContext *ctx) {
   ctx->pc = 0;
   int cycle_count = 0;          /* Safety counter */
   const int MAX_CYCLES = 10000; /* Limit for malicious emulations */
+
+  /* Track if we need a comma before the next JSON object */
+  int is_first_json = 1;
+
   while (ctx->pc < ctx->program_size) {
     if (cycle_count++ > MAX_CYCLES) { /* Check the limit */
       if (!ctx->json_mode) {
@@ -107,6 +111,9 @@ void run(EmulatorContext *ctx) {
         printf("Operand: %d Opcode: %d\n", operand, opcode);
         print_memory(ctx);
       } else {
+        /* Prepend a comma if there are prior states in the array */
+        if (!is_first_json)
+          fprintf(stdout, ",");
         print_memory_json(ctx);
         fprintf(stdout, "]");
       }
@@ -118,9 +125,18 @@ void run(EmulatorContext *ctx) {
       printf("Operand: %d Opcode: %d\n", operand, opcode);
       print_memory(ctx);
     } else {
+
+      /* Prepend a comma if there are prior states in the array */
+      if (!is_first_json)
+        fprintf(stdout, ",");
       print_memory_json(ctx);
-      fprintf(stdout, ",");
+
+      /* We've printed at least one item, so subsequent items need a comma */
+      is_first_json = 0;
     }
     ctx->pc = next_pc;
+  }
+  if (ctx->json_mode) {
+    fprintf(stdout, "]");
   }
 }
