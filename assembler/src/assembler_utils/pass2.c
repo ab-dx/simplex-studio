@@ -1,3 +1,8 @@
+/* DECLARATION OF AUTHORSHIP
+ * AUTHOR: Abhinav Datta (2401CS30)
+ * The following code is a part of CS2206 Mini Project: 2 Pass Assembler
+ * Simplex ISA (2026)
+ * */
 #include "../../include/assembler.h"
 #include <stdlib.h>
 #include <string.h>

@@ -1,3 +1,7 @@
+# DECLARATION OF AUTHORSHIP
+# AUTHOR: Abhinav Datta (2401CS30)
+# The following code is a part of CS2206 Mini Project: 2 Pass Assembler Simplex ISA (2026)
+
 FROM ubuntu:24.04
 
 RUN apt-get update && apt-get install -y gcc make build-essential
