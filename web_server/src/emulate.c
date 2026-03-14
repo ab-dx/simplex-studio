@@ -42,7 +42,7 @@ void emulate_request(char *machine_code, int content_length, int socket) {
     close(server_to_emu[1]);
 
     // Read the binary response
-    char buffer[1000 * 1024] = {0}; // 1000 kb buffer for response
+    char buffer[5000 * 1024] = {0}; // 5000 kb buffer for response
     int count = 0;
     int bytes_read;
     while (count < sizeof(buffer) - 1) { // Don't read more than buffer size

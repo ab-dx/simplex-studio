@@ -1,4 +1,5 @@
-ERROR: Illegal immediate 08ge
+ERROR: Illegal immediate '08ge'
+ERROR: Illegal immediate '08ge'
 ERROR: Illegal immediate 5,
 ERROR: Extra on end of line: ldc 5, 6; extra on end of line
 ERROR: Invalid label name 0def
@@ -68,7 +69,7 @@ Lines:
 	PC: 0	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: -5	Op Label: 
 1. Line:
 	Original line: ldc 08ge ; not a number
-	PC: 1	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 8	Op Label: 
+	PC: 1	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 0	Op Label: 
 2. Line:
 	Original line: ldc ; missing operand
 	PC: 2	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NONE	Op value: 0	Op Label: 

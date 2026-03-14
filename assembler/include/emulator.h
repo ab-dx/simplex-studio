@@ -4,7 +4,7 @@
  * Simplex ISA (2026)
  * */
 #include <stdio.h>
-#define MEM_SIZE 1024
+#define MEM_SIZE 8192
 
 typedef struct {
   int memory[MEM_SIZE];

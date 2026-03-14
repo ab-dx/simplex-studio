@@ -108,13 +108,23 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
       /* Check if it's a number (starts with digit, -, or +) */
       if (isdigit(imm_ptr[0]) || imm_ptr[0] == '-' || imm_ptr[0] == '+') {
         line->op_type = NUMBER;
-        /* Hex (0x) and decimal parsing */
+        /* Hex (0x), Octal (0) and decimal parsing */
         if (strncmp(imm_ptr, "0x", 2) == 0 || strncmp(imm_ptr, "0X", 2) == 0) {
           line->op_value = (int)strtol(imm_ptr, NULL, 16);
           /* Check for illegal hex */
           for (char *start = imm_ptr + 2; *start != '\0'; start++) {
             if (!(isdigit(*start) ||
                   ('A' <= toupper(*start) && toupper(*start) <= 'F'))) {
+              fprintf(stderr, "ERROR: Illegal immediate '%s'\n", imm_ptr);
+              ctx->has_error = 1;
+              /* exit(1); */
+            }
+          }
+        } else if (strncmp(imm_ptr, "0", 1) == 0 && strlen(imm_ptr) > 1) {
+          line->op_value = (int)strtol(imm_ptr, NULL, 8);
+          /* Check for illegal octal */
+          for (char *start = imm_ptr + 2; *start != '\0'; start++) {
+            if (!(('0' <= toupper(*start) && toupper(*start) <= '8'))) {
               fprintf(stderr, "ERROR: Illegal immediate '%s'\n", imm_ptr);
               ctx->has_error = 1;
               /* exit(1); */

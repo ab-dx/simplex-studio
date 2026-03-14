@@ -225,7 +225,7 @@ Label: ''
 Mnemonic: 'data'
 Immediate: '1'
 
-; Variables for software multiplication
+; Variables for multiplication
 mul_a:
 Label: 'mul_a'
 Mnemonic: '(null)'

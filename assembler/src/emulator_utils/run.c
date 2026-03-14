@@ -10,8 +10,8 @@ void run(EmulatorContext *ctx) {
   if (ctx->json_mode)
     fprintf(stdout, "[");
   ctx->pc = 0;
-  int cycle_count = 0;          /* Safety counter */
-  const int MAX_CYCLES = 10000; /* Limit for malicious emulations */
+  int cycle_count = 0;           /* Safety counter */
+  const int MAX_CYCLES = 100000; /* Limit for malicious emulations */
 
   /* Track if we need a comma before the next JSON object */
   int is_first_json = 1;
@@ -79,7 +79,7 @@ void run(EmulatorContext *ctx) {
       ctx->a = ctx->b >> ctx->a;
       break;
     case 10: /* adj */
-      ctx->sp = ctx->sp - operand;
+      ctx->sp = ctx->sp + operand;
       break;
     case 11: /* a2sp */
       ctx->sp = ctx->a;
