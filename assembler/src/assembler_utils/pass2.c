@@ -9,6 +9,7 @@
 
 void pass_2(AssemblerContext *ctx, FILE *output_obj_file,
             FILE *output_lst_file) {
+  int halt_found = 0; /* Check for presence of HALT */
   for (int pc = 0; pc < ctx->line_count; pc++) {
     Line line = ctx->lines[pc]; /* Retrieve current line */
     int result = 0;             /* Resultant HEX Instruction */
@@ -38,7 +39,9 @@ void pass_2(AssemblerContext *ctx, FILE *output_obj_file,
       ctx->has_error = 1;
       /* exit(1); */
     } else {
-
+      if (instr->opcode == 18) {
+        halt_found = 1;
+      }
       switch (instr->expected_op) {
       default:
       case NO_OPERAND:
@@ -109,6 +112,9 @@ void pass_2(AssemblerContext *ctx, FILE *output_obj_file,
     if (!(ctx->sym_table[i].used)) {
       fprintf(stderr, "WARNING: Unused symbol %s\n", ctx->sym_table[i].name);
     }
+  }
+  if (!halt_found) {
+    fprintf(stderr, "WARNING: HALT not found\n");
   }
   if (ctx->has_error) {
     fprintf(stderr, "Errors found, avoid using outputs\n");

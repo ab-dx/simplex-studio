@@ -62,7 +62,7 @@ This project contains 3 main components at its core:
         - The listing file shows the bytes produced for each instruction and that instruction's mnemonic at no extra I/O cost
         - The first pass reads every line of the assembly code, cleans comments, saves symbols/labels to a symbol table, and recognizes mnemonics and operands, building a complete internal representation of the code (thus, not requiring any I/O with the input file in the second pass)
         - The second pass uses this internal representation to correctly assign addresses to labels, and correctly translates mnemonics and appropriate opcodes into machine code and a listing file
-        - The assembler issues warnings for unused labels and errors for:
+        - The assembler issues warnings for unused labels, missing HALT and errors for:
             - Invalid Label Name
             - Illegal Immediate
             - Extra on end of line
