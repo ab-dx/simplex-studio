@@ -118,6 +118,10 @@ This project contains 3 main components at its core:
       (or rather ./build/target/server)
 - The server requires to be run in a POSIX-Compliant environment, such as on a Linux Distribtion (Bare metal, Docker environment or WSL), BSD or any other POSIX Compliant Operating System (Windows doesn't adhere by default)
 - This is required as the server makes use of POSIX sockets, POSIX pipes and certain syscalls only available on these standards
+- A Dockerfile is provided at the root of the project for running in a non-POSIX compliant environment with Docker available (uses an Ubuntu base)
+- For running through Docker:
+      docker build . -t simplex-server
+      docker run -p 8080:8080 -it simplex-server
 - Capabilities:
         - The server initialises a TCP server via sockets and binds it to port 8080
         - It accepts TCP packets and stores it into a constant size buffer of 10kb in memory
@@ -139,7 +143,6 @@ This project contains 3 main components at its core:
 - The core logic of the web app essential for its proper functioning contains declaration of authorship and is solely written by Abhinav Datta.
 - Directory structure:
     - node_modules/ : third party dependencies of the project
-    - dist/ : (generated) compilation target for React, to be statically served as the web app
     - src/ : Core source code for the web app
         - main.jsx : Entrypoint for the React Web App
         - index.css : Root CSS file for styling the web app
@@ -151,8 +154,19 @@ This project contains 3 main components at its core:
         - components/RegisterDisplay.jsx : Panel for showing state of registers PC,SP,A,B at each step of the emulator
         - lib/utils.js : (generated) utility file for tailwind css merge
     - index.html : Entrypoint for the web page
+    - server.js : Entrypoint for serving the built site
     - package.json : (generated) for tracking node dependencies
     - package-lock.json : (generated) for tracking node dependencies
     - postcss.config.js : (generated) for setting up tailwind css as a postcss plugin
     - tailwind.config.js : (generated) tailwind css configuration
     - vite.config.js : (generate) vite configured to build react apps
+- Install dependencies using: (at the root of studio/)
+      npm install
+- The web app can be run in Dev mode using: (at the root of studio/)
+      npm run dev
+- Capabilities:
+        - The web app is accessible on http://localhost:5173 . It assumes that the web server is up and running on http://localhost:8080
+        - The app features a code editor where SIMPLEX assembly can be written 
+        - This code can be assembled, which internally calls POST /assemble
+        - The machine code received can be emulated, which internally calls POST /emulate
+        - Register state can be observed step by step and final memory addresses can be inspected
