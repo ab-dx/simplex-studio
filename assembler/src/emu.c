@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
     fprintf(stderr,
             "\tJSON MODE: emu -j (Read from stdin and write to stdout)\n");
     fprintf(stderr, "\tRegular MODE: emu output.obj\n");
+    fprintf(stderr, "Further explained in claims.txt\n");
     return 1;
   }
 

@@ -52,8 +52,9 @@ This project contains 3 main components at its core:
         - To redirect logs to a log file:
                 ./build/target/asm input.asm output.obj output.lst > out.log 2>&1
   - I/O mode:
-        - Expected to be run as : <some_program> | asm -i | <some_other_program>
+        - Expected to be run as : <some_program> | ./asm -i | <some_other_program>
         (or rather <some_program> | ./build/target/asm -i | <some_other_program>)
+        E.g: echo "ldc 5 \n HALT" | ./asm -i | xxd
         - This mode reads the program to be assembled from stdin and writes the assembled binary to stdout
         - For e.g, here <some_program> can write assembly code to its stdout, which is read from asm's stdin, once assembled, the machine code bytes are sent to stdout, read by <some_other_program>'s stdin
         - This was implemented to be used by the POSIX Web Server (other component) as 
@@ -84,6 +85,7 @@ This project contains 3 main components at its core:
   - JSON Mode:
         - Expected to be run as : <some_program> | ./emu -j | <some_other_program>
         (or rather <some_program> | ./build/target/emu -j | <some_other_program>)
+        E.g: cat output.obj | ./emu -j
         - This mode reads the binary to be emulated from stdin and writes the step by step register state and trace as a json string to stdout
         - For e.g, here <some_program> can write SIMPLEX ISA binary instructions to its stdout, which is read from emu's stdin, once emulated, the json string is sent to stdout, read by <some_other_program>'s stdin
         - This was implemented to be used by the POSIX Web Server (other component) as 

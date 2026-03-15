@@ -10,6 +10,7 @@ int main(int argc, char **argv) {
     fprintf(stderr, "USAGE: \n");
     fprintf(stderr, "\tasm input.asm output.obj output.lst\n");
     fprintf(stderr, "\tasm -i (Read from stdin and write to stdout)\n");
+    fprintf(stderr, "Further explained in claims.txt\n");
     return 1;
   }
 
