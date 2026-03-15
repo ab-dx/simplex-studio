@@ -31,17 +31,13 @@ void trim(char *str) {
 void process_lines(AssemblerContext *ctx, FILE *input_file,
                    void (*parse_line)(AssemblerContext *, char *)) {
   char buffer[1024]; /* Buffer for storing the current line */
-  int c; /* Current char stored as an int as EOF may be -1 on certain systems */
 
-  while ((c = fgetc(input_file)) != EOF) {
-    int idx = 0; /* index of the current line */
-    /* Separately handle idx = 0 to prevent skipping the first character from */
-    /* eof check */
-    while (idx == 0 || (c = fgetc(input_file)) != '\n') {
-      buffer[idx++] = c; /* Append character to buffer */
-    }
-    buffer[idx] = '\0';         /* Terminate line */
-    (*parse_line)(ctx, buffer); /* Call function pointer to process the line */
+  while (fgets(buffer, sizeof(buffer), input_file) != NULL) {
+
+    /* Replace new lines with null terminator */
+    buffer[strcspn(buffer, "\n")] = 0;
+
+    (*parse_line)(ctx, buffer);
   }
 }
 
