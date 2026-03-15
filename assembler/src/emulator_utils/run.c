@@ -25,9 +25,6 @@ void run(EmulatorContext *ctx) {
       }
       return;
     }
-    /* int instr = ctx->memory[ctx->pc]; */
-    /* int opcode = instr & 0x000000FF; // Bottom 8 bits for opcode */
-    /* int operand = instr >> 8;        // Top 24 bits for operand */
     uint32_t instr = (uint32_t)ctx->memory[ctx->pc];
     int opcode = instr & 0xFFu;
     int operand = (int)(instr >> 8); /* now 0..2^24-1 */
@@ -41,7 +38,7 @@ void run(EmulatorContext *ctx) {
       if (!ctx->json_mode) {
         printf("ERROR: Invalid Opcode %d at PC 0x%08X\n", opcode, ctx->pc);
       } else {
-        fprintf(stdout, "{\"error\": \"Invalid Opcode\"}]");
+        fprintf(stderr, "{\"error\": \"Invalid Opcode\"}]");
       }
       return;
       break;
@@ -53,17 +50,61 @@ void run(EmulatorContext *ctx) {
       ctx->a = ctx->a + operand;
       break;
     case 2: /* ldl */
+      /* Memory out of bounds seg fault check */
+      if (ctx->sp + operand < 0 || ctx->sp + operand >= MEM_SIZE) {
+        if (!ctx->json_mode) {
+          printf("\nERROR: Segmentation Fault!");
+        } else {
+          if (!is_first_json)
+            fprintf(stdout, ",");
+          fprintf(stderr, "{\"error\": \"Segmentation Fault\"}]");
+        }
+        return;
+      }
       ctx->b = ctx->a;
       ctx->a = ctx->memory[ctx->sp + operand];
       break;
     case 3: /* stl */
+      /* Memory out of bounds seg fault check */
+      if (ctx->sp + operand < 0 || ctx->sp + operand >= MEM_SIZE) {
+        if (!ctx->json_mode) {
+          printf("\nERROR: Segmentation Fault!");
+        } else {
+          if (!is_first_json)
+            fprintf(stdout, ",");
+          fprintf(stderr, "{\"error\": \"Segmentation Fault\"}]");
+        }
+        return;
+      }
       ctx->memory[ctx->sp + operand] = ctx->a;
       ctx->a = ctx->b;
       break;
     case 4: /* ldnl */
+      /* Memory out of bounds seg fault check */
+      if (ctx->a + operand < 0 || ctx->a + operand >= MEM_SIZE) {
+        if (!ctx->json_mode) {
+          printf("\nERROR: Segmentation Fault! ");
+        } else {
+          if (!is_first_json)
+            fprintf(stdout, ",");
+          fprintf(stderr, "{\"error\": \"Segmentation Fault\"}]");
+        }
+        return;
+      }
       ctx->a = ctx->memory[ctx->a + operand];
       break;
     case 5: /* stnl */
+      /* Memory out of bounds seg fault check */
+      if (ctx->a + operand < 0 || ctx->a + operand >= MEM_SIZE) {
+        if (!ctx->json_mode) {
+          printf("\nERROR: Segmentation Fault!");
+        } else {
+          if (!is_first_json)
+            fprintf(stdout, ",");
+          fprintf(stderr, "{\"error\": \"Segmentation Fault\"}]");
+        }
+        return;
+      }
       ctx->memory[ctx->a + operand] = ctx->b;
       break;
     case 6: /* add */
@@ -82,6 +123,17 @@ void run(EmulatorContext *ctx) {
       ctx->sp = ctx->sp + operand;
       break;
     case 11: /* a2sp */
+      /* Memory out of bounds seg fault check */
+      if (ctx->a < 0 || ctx->a >= MEM_SIZE) {
+        if (!ctx->json_mode) {
+          printf("\nERROR: Segmentation Fault!");
+        } else {
+          if (!is_first_json)
+            fprintf(stdout, ",");
+          fprintf(stderr, "{\"error\": \"Segmentation Fault\"}]");
+        }
+        return;
+      }
       ctx->sp = ctx->a;
       ctx->a = ctx->b;
       break;
@@ -138,6 +190,20 @@ void run(EmulatorContext *ctx) {
 
       /* We've printed at least one item, so subsequent items need a comma */
       is_first_json = 0;
+    }
+    /* PC out of bounds segfault */
+    if (next_pc < 0 || next_pc >= MEM_SIZE) {
+      if (!ctx->json_mode) {
+        printf("\nERROR: Segmentation Fault! Attempted to jump to invalid PC "
+               "0x%08X\n",
+               next_pc);
+      } else {
+        if (!is_first_json)
+          fprintf(stdout, ",");
+        fprintf(stderr,
+                "{\"error\": \"Segmentation Fault: PC Out of Bounds\"}]");
+      }
+      return;
     }
     ctx->pc = next_pc;
   }

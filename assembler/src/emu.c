@@ -9,9 +9,9 @@
 int main(int argc, char **argv) {
   if (argc != 2) {
     fprintf(stderr, "USAGE:\n");
-    fprintf(stderr,
-            "\tJSON MODE: emu -j (Read from stdin and write to stdout)\n");
-    fprintf(stderr, "\tRegular MODE: emu output.obj\n");
+    fprintf(stderr, "\tJSON MODE: emu -j (Read from stdin and write to stdout, "
+                    "prints trace+memory dump as json)\n");
+    fprintf(stderr, "\tRegular MODE: emu output.obj (Prints trace)\n");
     fprintf(stderr, "Further explained in claims.txt\n");
     return 1;
   }
