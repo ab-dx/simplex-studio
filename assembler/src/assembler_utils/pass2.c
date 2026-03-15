@@ -18,8 +18,6 @@ void pass_2(AssemblerContext *ctx, FILE *output_obj_file,
       /* Empty instruction, only label on this line */
       /* Write instruction as text to listing file */
       /* Write 0 to obj file */
-      /* fprintf(output_lst_file, "%08X\t        \t%s\n", pc, */
-      /* line.original_line); */
       fprintf(output_lst_file, "%08X\t%08X\t%s\n", pc, result,
               line.original_line);
       fwrite(&result, sizeof(int), 1, output_obj_file);
