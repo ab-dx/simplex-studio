@@ -78,9 +78,10 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
       fprintf(stderr, "ERROR: Invalid label name %s\n", buffer);
       ctx->has_error = 1;
       /* exit(1); */
+    } else {
+      symbol_found = 1;
+      strcpy(label, buffer);
     }
-    symbol_found = 1;
-    strcpy(label, buffer);
   } else {
     /* If no label, set colon_ptr to point right before buffer */
     colon_ptr = buffer - 1;
@@ -117,16 +118,18 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
                   ('A' <= toupper(*start) && toupper(*start) <= 'F'))) {
               fprintf(stderr, "ERROR: Illegal immediate '%s'\n", imm_ptr);
               ctx->has_error = 1;
+              imm_ptr = NULL;
               /* exit(1); */
             }
           }
         } else if (strncmp(imm_ptr, "0", 1) == 0 && strlen(imm_ptr) > 1) {
           line->op_value = (int)strtol(imm_ptr, NULL, 8);
           /* Check for illegal octal */
-          for (char *start = imm_ptr + 2; *start != '\0'; start++) {
+          for (char *start = imm_ptr + 1; *start != '\0'; start++) {
             if (!(('0' <= toupper(*start) && toupper(*start) <= '8'))) {
               fprintf(stderr, "ERROR: Illegal immediate '%s'\n", imm_ptr);
               ctx->has_error = 1;
+              imm_ptr = NULL;
               /* exit(1); */
             }
           }
@@ -145,6 +148,7 @@ void parse_line(AssemblerContext *ctx, char *buffer) {
           if (strcmp(imm_buffer, imm_ptr + displ) != 0) {
             fprintf(stderr, "ERROR: Illegal immediate %s\n", imm_ptr);
             ctx->has_error = 1;
+            imm_ptr = NULL;
             /* exit(1); */
           }
         }

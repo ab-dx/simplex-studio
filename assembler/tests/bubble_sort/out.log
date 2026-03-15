@@ -1,3 +1,6 @@
+; DECLARATION OF AUTHORSHIP
+; Abhinav Datta 2401CS30
+
 outer_loop:
 Label: 'outer_loop'
 Mnemonic: '(null)'
@@ -663,9 +666,9 @@ Lines:
 	Original line: brz end_sort ; If isSorted == 1, array is sorted!
 	PC: 73	Defined Label: 	Mnemonic: 'brz'	Operand Type: LABEL_REF	Op value: 0	Op Label: end_sort
 74. Line:
-	Original line: br outer_loop
-	PC: 74	Defined Label: 	Mnemonic: 'WARNING: Unused symbol swap
-br'	Operand Type: LABEL_REF	Op value: 0	Op Label: outer_loop
+	Original lWARNING: Unused symbol swap
+ine: br outer_loop
+	PC: 74	Defined Label: 	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: outer_loop
 75. Line:
 	Original line: HALT
 	PC: 75	Defined Label: end_sort	Mnemonic: 'HALT'	Operand Type: NONE	Op value: 0	Op Label: 

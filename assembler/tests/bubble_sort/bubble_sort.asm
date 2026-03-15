@@ -1,23 +1,26 @@
+; DECLARATION OF AUTHORSHIP
+; Abhinav Datta 2401CS30
+
 outer_loop:
-    ; Initialize pos = 0 
+    ; pos = 0 
     ldc 0
     ldc pos
     stnl 0
 
-    ; Initialize isSorted = 1 
+    ; isSorted = 1 
     ldc 1
     ldc isSorted
     stnl 0
 
 inner_loop:
-    ; Stop if pos == 4
+    ; stop if pos == 4
     ldc pos
     ldnl 0
     ldc 4
     sub 
     brz end_inner_loop
 
-    ; Load arr[pos] into temp 
+    ; load arr[pos] into temp 
     ldc pos
     ldnl 0
     ldc arr
@@ -27,7 +30,7 @@ inner_loop:
     ldc temp
     stnl 0      ; temp = arr[pos]
 
-    ; Load arr[pos+1] 
+    ; load arr[pos+1] 
     ldc pos
     ldnl 0
     ldc 1
@@ -36,7 +39,7 @@ inner_loop:
     add
     ldnl 0      ; A = arr[pos+1]
 
-    ;  Compare them 
+    ;  compare 
     ldc temp
     ldnl 0      ; A = arr[pos], B = arr[pos+1]
     sub         ; arr[pos] - arr[pos+1]
@@ -44,8 +47,8 @@ inner_loop:
     brz skip_swap
 
 swap:
-    ;  Write arr[pos+1] into arr[pos] 
-    ; Calculate addr(arr[pos]) and save to ptr
+    ;  write arr[pos+1] into arr[pos] 
+    ; calculate addr(arr[pos]) and save to ptr
     ldc pos
     ldnl 0
     ldc arr
@@ -54,7 +57,7 @@ swap:
     ldc ptr
     stnl 0      ; ptr = addr(arr[pos])
 
-    ; Load arr[pos+1] back into A
+    ; load arr[pos+1] back into A
     ldc pos
     ldnl 0
     ldc 1
@@ -63,13 +66,13 @@ swap:
     add
     ldnl 0      ; A = arr[pos+1]
     
-    ; Load our pointer and store!
+    ; load pointer and store
     ldc ptr
     ldnl 0      ; A = addr(arr[pos]), B = arr[pos+1]
     stnl 0      ; arr[pos] = arr[pos+1]
 
-    ;  Write temp (original arr[pos]) into arr[pos+1] 
-    ; Calculate addr(arr[pos+1]) and save to ptr
+    ;  write temp (original arr[pos]) into arr[pos+1] 
+    ; calculate addr(arr[pos+1]) and save to ptr
     ldc pos
     ldnl 0
     ldc 1
@@ -80,22 +83,22 @@ swap:
     ldc ptr
     stnl 0      ; ptr = addr(arr[pos+1])
 
-    ; Load temp back into A
+    ; load temp back into A
     ldc temp
     ldnl 0      ; A = original arr[pos]
     
-    ; Load our pointer and store!
+    ; load pointer and store
     ldc ptr
     ldnl 0      ; A = addr(arr[pos+1]), B = original arr[pos]
     stnl 0      ; arr[pos+1] = original arr[pos]
 
-    ;  Mark isSorted = 0 (False) 
+    ;  isSorted = 0  
     ldc 0
     ldc isSorted
     stnl 0
 
 skip_swap:
-    ;  Increment pos 
+    ;  increment pos 
     ldc pos
     ldnl 0
     ldc 1
@@ -106,14 +109,14 @@ skip_swap:
     br inner_loop
 
 end_inner_loop:
-    ;  Check if the pass was clean 
+    ;  check if the pass was clean 
     ldc isSorted
     ldnl 0
     ldc 1
     sub
-    brz end_sort ; If isSorted == 1, array is sorted!
+    brz end_sort ; if isSorted == 1, array is sorted
 
-    ; Otherwise, run another pass
+    ; otherwise, run another pass
     br outer_loop
 
 end_sort:

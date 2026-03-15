@@ -1,3 +1,6 @@
+; DECLARATION OF AUTHORSHIP
+; Abhinav Datta 2401CS30
+
 fact_loop:
     ;  Stop if n == 0 
     ldc n

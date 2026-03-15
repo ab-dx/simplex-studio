@@ -1,5 +1,5 @@
 ERROR: Illegal immediate '08ge'
-ERROR: Illegal immediate '08ge'
+ERROR: Illegal immediate '(null)'
 ERROR: Illegal immediate 5,
 ERROR: Extra on end of line: ldc 5, 6; extra on end of line
 ERROR: Invalid label name 0def
@@ -10,7 +10,6 @@ ERROR: Symbol nonesuch not found
 ERROR: Unknown Instruction: fibble
 ERROR: Unknown Instruction: 0def
 WARNING: Unused symbol label
-WARNING: Unused symbol 0def
 WARNING: Unused symbol label
 WARNING: HALT not found
 Errors found, avoid using outputs
@@ -23,7 +22,7 @@ Immediate: '-5'
 ldc 08ge ; not a number
 Label: ''
 Mnemonic: 'ldc'
-Immediate: '08ge'
+Immediate: '(null)'
 ldc ; missing operand
 Label: ''
 Mnemonic: 'ldc'
@@ -31,13 +30,13 @@ Immediate: '(null)'
 ldc 5, 6; extra on end of line
 Label: ''
 Mnemonic: 'ldc'
-Immediate: '5,'
+Immediate: '(null)'
 label:
 Label: 'label'
 Mnemonic: '(null)'
 Immediate: '(null)'
 0def: ; bogus label name
-Label: '0def'
+Label: 'label'
 Mnemonic: '(null)'
 Immediate: '(null)'
 add 5 ; unexpected operand
@@ -62,7 +61,7 @@ Mnemonic: '0def'
 Immediate: '(null)'
 
 AssemblerContext:
-	Symbol count: 3
+	Symbol count: 2
 	Line count: 8
 Lines:
 0. Line:
@@ -79,7 +78,7 @@ Lines:
 	PC: 3	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 5	Op Label: 
 4. Line:
 	Original line: add 5 ; unexpected operand
-	PC: 4	Defined Label: 0def	Mnemonic: 'add'	Operand Type: NUMBER	Op value: 5	Op Label: 
+	PC: 4	Defined Label: label	Mnemonic: 'add'	Operand Type: NUMBER	Op value: 5	Op Label: 
 5. Line:
 	Original line: br nonesuch ; no such label
 	PC: 5	Defined Label: label	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: nonesuch
@@ -93,6 +92,4 @@ Symbols:
 0. Symbol:
 	Name: label	Address: 4
 1. Symbol:
-	Name: 0def	Address: 4
-2. Symbol:
 	Name: label	Address: 5

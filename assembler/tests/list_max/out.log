@@ -1,0 +1,390 @@
+; DECLARATION OF AUTHORSHIP
+; Abhinav Datta 2401CS30
+
+ldc idx
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'idx'
+ldnl 0 ; A = idx
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+ldc arr
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'arr'
+add 
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+ldnl 0; A = arr[idx]
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+
+ldc max
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'max'
+stnl 0 ; max = arr[idx]
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+loop:
+Label: 'loop'
+Mnemonic: '(null)'
+Immediate: '(null)'
+
+; get cur
+ldc idx
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'idx'
+ldnl 0 ; A = idx
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+ldc arr
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'arr'
+add 
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+ldnl 0; A = arr[idx]
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+
+; compare with max
+ldc max
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'max'
+ldnl 0
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+sub ; A = arr[idx] - max
+Label: ''
+Mnemonic: 'sub'
+Immediate: '(null)'
+
+brlz skip_update
+Label: ''
+Mnemonic: 'brlz'
+Immediate: 'skip_update'
+; update max
+ldc idx
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'idx'
+ldnl 0 ; A = idx
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+ldc arr
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'arr'
+add 
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+ldnl 0; A = arr[idx]
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+
+ldc max
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'max'
+stnl 0 ; max = arr[idx]
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
+skip_update:
+Label: 'skip_update'
+Mnemonic: '(null)'
+Immediate: '(null)'
+ldc N
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'N'
+ldc idx
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'idx'
+ldnl 0
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+
+sub ; A = N - idx
+Label: ''
+Mnemonic: 'sub'
+Immediate: '(null)'
+brz exit_loop
+Label: ''
+Mnemonic: 'brz'
+Immediate: 'exit_loop'
+
+ldc idx
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'idx'
+ldnl 0
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+ldc 1
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '1'
+add ; A = idx + 1
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+ldc idx
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'idx'
+stnl 0 ; idx = idx + 1
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+ldc 0
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '0'
+brz loop
+Label: ''
+Mnemonic: 'brz'
+Immediate: 'loop'
+
+exit_loop:
+Label: 'exit_loop'
+Mnemonic: '(null)'
+Immediate: '(null)'
+HALT
+Label: ''
+Mnemonic: 'HALT'
+Immediate: '(null)'
+
+
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
+; DATA
+max:
+Label: 'max'
+Mnemonic: '(null)'
+Immediate: '(null)'
+data 0
+Label: ''
+Mnemonic: 'data'
+Immediate: '0'
+idx:
+Label: 'idx'
+Mnemonic: '(null)'
+Immediate: '(null)'
+data 0
+Label: ''
+Mnemonic: 'data'
+Immediate: '0'
+arr:
+Label: 'arr'
+Mnemonic: '(null)'
+Immediate: '(null)'
+data 5
+Label: ''
+Mnemonic: 'data'
+Immediate: '5'
+data 4
+Label: ''
+Mnemonic: 'data'
+Immediate: '4'
+data 8
+Label: ''
+Mnemonic: 'data'
+Immediate: '8'
+data 3
+Label: ''
+Mnemonic: 'data'
+Immediate: '3'
+data 1
+Label: ''
+Mnemonic: 'data'
+Immediate: '1'
+data 2
+Label: ''
+Mnemonic: 'data'
+Immediate: '2'
+N: SET 5
+Label: 'N'
+Mnemonic: 'SET'
+Immediate: '5'
+
+AssemblerContext:
+	Symbol count: 7
+	Line count: 45
+Lines:
+0. Line:
+	Original line: ldc idx
+	PC: 0	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: idx
+1. Line:
+	Original line: ldnl 0 ; A = idx
+	PC: 1	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+2. Line:
+	Original line: ldc arr
+	PC: 2	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: arr
+3. Line:
+	Original line: add
+	PC: 3	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+4. Line:
+	Original line: ldnl 0; A = arr[idx]
+	PC: 4	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+5. Line:
+	Original line: ldc max
+	PC: 5	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: max
+6. Line:
+	Original line: stnl 0 ; max = arr[idx]
+	PC: 6	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+7. Line:
+	Original line: ldc idx
+	PC: 7	Defined Label: loop	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: idx
+8. Line:
+	Original line: ldnl 0 ; A = idx
+	PC: 8	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+9. Line:
+	Original line: ldc arr
+	PC: 9	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: arr
+10. Line:
+	Original line: add
+	PC: 10	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+11. Line:
+	Original line: ldnl 0; A = arr[idx]
+	PC: 11	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+12. Line:
+	Original line: ldc max
+	PC: 12	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: max
+13. Line:
+	Original line: ldnl 0
+	PC: 13	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+14. Line:
+	Original line: sub ; A = arr[idx] - max
+	PC: 14	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
+15. Line:
+	Original line: brlz skip_update
+	PC: 15	Defined Label: 	Mnemonic: 'brlz'	Operand Type: LABEL_REF	Op value: 0	Op Label: skip_update
+16. Line:
+	Original line: ldc idx
+	PC: 16	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: idx
+17. Line:
+	Original line: ldnl 0 ; A = idx
+	PC: 17	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+18. Line:
+	Original line: ldc arr
+	PC: 18	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: arr
+19. Line:
+	Original line: add
+	PC: 19	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+20. Line:
+	Original line: ldnl 0; A = arr[idx]
+	PC: 20	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+21. Line:
+	Original line: ldc max
+	PC: 21	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: max
+22. Line:
+	Original line: stnl 0 ; max = arr[idx]
+	PC: 22	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+23. Line:
+	Original line: ldc N
+	PC: 23	Defined Label: skip_update	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: N
+24. Line:
+	Original line: ldc idx
+	PC: 24	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: idx
+25. Line:
+	Original line: ldnl 0
+	PC: 25	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+26. Line:
+	Original line: sub ; A = N - idx
+	PC: 26	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
+27. Line:
+	Original line: brz exit_loop
+	PC: 27	Defined Label: 	Mnemonic: 'brz'	Operand Type: LABEL_REF	Op value: 0	Op Label: exit_loop
+28. Line:
+	Original line: ldc idx
+	PC: 28	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: idx
+29. Line:
+	Original line: ldnl 0
+	PC: 29	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+30. Line:
+	Original line: ldc 1
+	PC: 30	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+31. Line:
+	Original line: add ; A = idx + 1
+	PC: 31	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+32. Line:
+	Original line: ldc idx
+	PC: 32	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: idx
+33. Line:
+	Original line: stnl 0 ; idx = idx + 1
+	PC: 33	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+34. Line:
+	Original line: ldc 0
+	PC: 34	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 0	Op Label: 
+35. Line:
+	Original line: brz loop
+	PC: 35	Defined Label: 	Mnemonic: 'brz'	Operand Type: LABEL_REF	Op value: 0	Op Label: loop
+36. Line:
+	Original line: HALT
+	PC: 36	Defined Label: exit_loop	Mnemonic: 'HALT'	Operand Type: NONE	Op value: 0	Op Label: 
+37. Line:
+	Original line: data 0
+	PC: 37	Defined Label: max	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 0	Op Label: 
+38. Line:
+	Original line: data 0
+	PC: 38	Defined Label: idx	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 0	Op Label: 
+39. Line:
+	Original line: data 5
+	PC: 39	Defined Label: arr	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 5	Op Label: 
+40. Line:
+	Original line: data 4
+	PC: 40	Defined Label: 	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 4	Op Label: 
+41. Line:
+	Original line: data 8
+	PC: 41	Defined Label: 	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 8	Op Label: 
+42. Line:
+	Original line: data 3
+	PC: 42	Defined Label: 	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 3	Op Label: 
+43. Line:
+	Original line: data 1
+	PC: 43	Defined Label: 	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 1	Op Label: 
+44. Line:
+	Original line: data 2
+	PC: 44	Defined Label: 	Mnemonic: 'data'	Operand Type: NUMBER	Op value: 2	Op Label: 
+Symbols:
+0. Symbol:
+	Name: loop	Address: 7
+1. Symbol:
+	Name: skip_update	Address: 23
+2. Symbol:
+	Name: exit_loop	Address: 36
+3. Symbol:
+	Name: max	Address: 37
+4. Symbol:
+	Name: idx	Address: 38
+5. Symbol:
+	Name: arr	Address: 39
+6. Symbol:
+	Name: N	Address: 5
