@@ -8,6 +8,7 @@ import CodeEditor from "./components/CodeEditor";
 import RegisterDisplay from "./components/RegisterDisplay";
 import DebugControls from "./components/DebugControls";
 import OutputBox from "./components/OutputBox";
+import ISA from "./components/ISA.jsx";
 
 const DEFAULT_CODE = `ldc 0x1000
 a2sp
@@ -128,7 +129,8 @@ export default function App() {
 					</p>
 				</div>
 
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+				<div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+					<ISA />
 					<CodeEditor
 						code={code}
 						onCodeChange={setCode}
@@ -137,7 +139,7 @@ export default function App() {
 						disabled={false}
 					/>
 
-					<div className="bg-card border border-border rounded-xl p-6 flex flex-col gap-4 shadow-sm">
+					<div className="bg-card border border-border rounded-xl p-6 flex flex-col gap-4 shadow-sm col-span-3">
 						<div>
 							<label className="font-semibold text-foreground">Registers</label>
 							<p className="text-xs text-muted-foreground">

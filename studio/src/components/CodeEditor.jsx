@@ -11,7 +11,7 @@ export default function CodeEditor({
 	disabled,
 }) {
 	return (
-		<div className="bg-card border border-border rounded-xl p-6 flex flex-col gap-4 shadow-sm">
+		<div className="bg-card border border-border rounded-xl p-6 flex flex-col gap-4 shadow-sm col-span-4">
 			<div>
 				<label className="font-semibold text-foreground">Assembly Source</label>
 				<p className="text-xs text-muted-foreground">
@@ -22,7 +22,7 @@ export default function CodeEditor({
 				value={code}
 				onChange={(e) => onCodeChange(e.target.value)}
 				spellCheck="false"
-				className="w-full h-[400px] bg-secondary/50 text-foreground border border-border rounded-lg font-mono text-sm p-4 resize-y focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors placeholder:text-muted-foreground/50"
+				className="w-full h-[600px] bg-secondary/50 text-foreground border border-border rounded-lg font-mono text-sm p-4 resize-y focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors placeholder:text-muted-foreground/50"
 			/>
 			<div className="flex gap-3">
 				<button
