@@ -116,6 +116,6 @@ void pass_2(AssemblerContext *ctx, FILE *output_obj_file,
   }
   if (ctx->has_error) {
     fprintf(stderr, "Errors found, avoid using outputs\n");
-    exit(1);
+    // exit(1);
   }
 }

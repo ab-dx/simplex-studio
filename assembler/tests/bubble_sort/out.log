@@ -1,6 +1,9 @@
 ; DECLARATION OF AUTHORSHIP
 ; Abhinav Datta 2401CS30
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 outer_loop:
 Label: 'outer_loop'
 Mnemonic: '(null)'
@@ -19,6 +22,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ; isSorted = 1 
     ldc 1
 Label: ''
@@ -33,6 +39,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 inner_loop:
 Label: 'inner_loop'
 Mnemonic: '(null)'
@@ -59,6 +68,9 @@ Label: ''
 Mnemonic: 'brz'
 Immediate: 'end_inner_loop'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ; temp = arr[pos]
     ldc pos
 Label: ''
@@ -81,6 +93,9 @@ Label: ''
 Mnemonic: 'ldnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ldc temp
 Label: ''
 Mnemonic: 'ldc'
@@ -90,6 +105,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ; A = arr[pos+1] 
     ldc pos
 Label: ''
@@ -120,6 +138,9 @@ Label: ''
 Mnemonic: 'ldnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ; compare 
     ldc temp
 Label: ''
@@ -142,6 +163,9 @@ Label: ''
 Mnemonic: 'brz'
 Immediate: 'skip_swap'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 skip_swap:
 Label: 'skip_swap'
 Mnemonic: '(null)'
@@ -172,11 +196,17 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     br inner_loop
 Label: ''
 Mnemonic: 'br'
 Immediate: 'inner_loop'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 swap:
 Label: 'swap'
 Mnemonic: '(null)'
@@ -212,6 +242,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ; A = arr[pos+1]
     ldc pos
 Label: ''
@@ -259,6 +292,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ;  arr[pos+1] = temp
     ; ptr = addr(arr[pos+1])
     ldc pos
@@ -298,6 +334,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ; A = temp
     ldc temp
 Label: ''
@@ -325,6 +364,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ;  isSorted = 0  
     ldc 0
 Label: ''
@@ -339,6 +381,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 end_inner_loop:
 Label: 'end_inner_loop'
 Mnemonic: '(null)'
@@ -365,12 +410,18 @@ Label: ''
 Mnemonic: 'brz'
 Immediate: 'end_sort'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ; otherwise, run another pass
     br outer_loop
 Label: ''
 Mnemonic: 'br'
 Immediate: 'outer_loop'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 end_sort:
 Label: 'end_sort'
 Mnemonic: '(null)'
@@ -380,6 +431,9 @@ Label: ''
 Mnemonic: 'HALT'
 Immediate: '(null)'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 ;  DATA SECTION 
 arr:
 Label: 'arr'
@@ -406,6 +460,9 @@ Label: ''
 Mnemonic: 'data'
 Immediate: '2'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 pos:
 Label: 'pos'
 Mnemonic: '(null)'

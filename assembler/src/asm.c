@@ -52,5 +52,11 @@ int main(int argc, char **argv) {
   fclose(output_obj_file);
   fclose(output_lst_file);
 
+  if (!ctx.io_mode && ctx.has_error) {
+    /* Remove partially generated obj and lst files */
+    remove(argv[2]);
+    remove(argv[3]);
+  }
+
   return 0;
 }

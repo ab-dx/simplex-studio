@@ -49,6 +49,8 @@ This project contains 3 main components at its core:
         - It also writes intermediate representations and errors/warnings to stdout and stderr (can be redirected to a .log file as done in the Makefile)
         - All the tests in tests/ have been processed through Standard Mode, and the corresponding outputs are in the respective folders
         - The assigned example programs are assembled as expected
+        - To redirect logs to a log file:
+                ./build/target/asm input.asm output.obj output.lst > out.log 2>&1
   - I/O mode:
         - Expected to be run as : <some_program> | asm -i | <some_other_program>
         (or rather <some_program> | ./build/target/asm -i | <some_other_program>)

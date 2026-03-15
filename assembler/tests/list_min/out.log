@@ -1,6 +1,9 @@
 ; DECLARATION OF AUTHORSHIP
 ; Abhinav Datta 2401CS30
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 ldc idx
 Label: ''
 Mnemonic: 'ldc'
@@ -22,6 +25,9 @@ Label: ''
 Mnemonic: 'ldnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 ldc min
 Label: ''
 Mnemonic: 'ldc'
@@ -31,11 +37,17 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 loop:
 Label: 'loop'
 Mnemonic: '(null)'
 Immediate: '(null)'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 ; get cur
 ldc idx
 Label: ''
@@ -58,6 +70,9 @@ Label: ''
 Mnemonic: 'ldnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 ; compare with min
 ldc min
 Label: ''
@@ -72,6 +87,9 @@ Label: ''
 Mnemonic: 'sub'
 Immediate: '(null)'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 brlz update
 Label: ''
 Mnemonic: 'brlz'
@@ -81,6 +99,9 @@ Label: ''
 Mnemonic: 'br'
 Immediate: 'continue'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 
 Label: ''
 Mnemonic: '(null)'
@@ -111,6 +132,9 @@ Label: ''
 Mnemonic: 'ldnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 
 Label: ''
 Mnemonic: '(null)'
@@ -124,6 +148,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 continue:
 Label: 'continue'
 Mnemonic: '(null)'
@@ -149,6 +176,9 @@ Label: ''
 Mnemonic: 'brz'
 Immediate: 'exit_loop'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 ldc idx
 Label: ''
 Mnemonic: 'ldc'
@@ -174,6 +204,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 ldc 0
 Label: ''
 Mnemonic: 'ldc'
@@ -183,6 +216,9 @@ Label: ''
 Mnemonic: 'brz'
 Immediate: 'loop'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 exit_loop:
 Label: 'exit_loop'
 Mnemonic: '(null)'
@@ -192,6 +228,9 @@ Label: ''
 Mnemonic: 'HALT'
 Immediate: '(null)'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 
 Label: ''
 Mnemonic: '(null)'

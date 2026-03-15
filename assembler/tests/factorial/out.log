@@ -1,6 +1,9 @@
 ; DECLARATION OF AUTHORSHIP
 ; Abhinav Datta 2401CS30
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 fact_loop:
 Label: 'fact_loop'
 Mnemonic: '(null)'
@@ -19,6 +22,9 @@ Label: ''
 Mnemonic: 'brz'
 Immediate: 'end_fact'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ;  prod = 0
     ldc 0
 Label: ''
@@ -33,6 +39,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ;  mul_a = result
     ldc result
 Label: ''
@@ -51,6 +60,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ;  mul_b = n
     ldc n
 Label: ''
@@ -69,6 +81,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 mul_loop:
 Label: 'mul_loop'
 Mnemonic: '(null)'
@@ -87,6 +102,9 @@ Label: ''
 Mnemonic: 'brz'
 Immediate: 'end_mul'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ;  prod = prod + mul_a 
     ldc prod
 Label: ''
@@ -117,6 +135,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ;  mul_b = mul_b - 1 
     ldc mul_b
 Label: ''
@@ -143,11 +164,17 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     br mul_loop
 Label: ''
 Mnemonic: 'br'
 Immediate: 'mul_loop'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 end_mul:
 Label: 'end_mul'
 Mnemonic: '(null)'
@@ -170,6 +197,9 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     ;  n = n - 1 
     ldc n
 Label: ''
@@ -196,11 +226,17 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
     br fact_loop
 Label: ''
 Mnemonic: 'br'
 Immediate: 'fact_loop'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 end_fact:
 Label: 'end_fact'
 Mnemonic: '(null)'
@@ -210,6 +246,9 @@ Label: ''
 Mnemonic: 'HALT'
 Immediate: '(null)'
 
+Label: ''
+Mnemonic: '(null)'
+Immediate: '(null)'
 ; DATA 
 n:
 Label: 'n'
