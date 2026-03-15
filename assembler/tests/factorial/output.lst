@@ -18,31 +18,31 @@
 00000011	00002F00	ldc prod
 00000012	00000004	ldnl 0      ; A = prod
 00000013	00002D00	ldc mul_a
-00000014	00000004	ldnl 0      ; A = mul_a, B = prod
+00000014	00000004	ldnl 0      ; A = mul_a
 00000015	00000006	add         ; A = mul_a + prod
-00000016	00002F00	ldc prod    ; A = addr(prod), B = mul_a + prod
+00000016	00002F00	ldc prod
 00000017	00000005	stnl 0      ; prod = B
 00000018	00002E00	ldc mul_b
 00000019	00000004	ldnl 0      ; A = mul_b
-0000001A	00000100	ldc 1       ; A = 1, B = mul_b
-0000001B	00000007	sub         ; A = B - A (mul_b - 1)
-0000001C	00002E00	ldc mul_b   ; A = addr(mul_b), B = mul_b - 1
-0000001D	00000005	stnl 0      ; mul_b = B
+0000001A	00000100	ldc 1
+0000001B	00000007	sub         ; A = mul_b - 1
+0000001C	00002E00	ldc mul_b
+0000001D	00000005	stnl 0      ; mul_b = mul_b - 1
 0000001E	FFFFEF11	br mul_loop
 0000001F	00002F00	ldc prod
 00000020	00000004	ldnl 0
 00000021	00002C00	ldc result
 00000022	00000005	stnl 0
 00000023	00002B00	ldc n
-00000024	00000004	ldnl 0      ; A = n
-00000025	00000100	ldc 1       ; A = 1, B = n
-00000026	00000007	sub         ; A = B - A (n - 1)
-00000027	00002B00	ldc n       ; A = addr(n), B = n - 1
-00000028	00000005	stnl 0      ; n = B
+00000024	00000004	ldnl 0
+00000025	00000100	ldc 1
+00000026	00000007	sub         ; A = n - 1
+00000027	00002B00	ldc n
+00000028	00000005	stnl 0      ; n = n - 1
 00000029	FFFFD611	br fact_loop
 0000002A	00000012	HALT
-0000002B	00000005	data 5      ; Number to calculate factorial for
-0000002C	00000001	data 1      ; Running product (starts at 1)
+0000002B	00000005	data 5
+0000002C	00000001	data 1
 0000002D	00000000	data 0
 0000002E	00000000	data 0
 0000002F	00000000	data 0

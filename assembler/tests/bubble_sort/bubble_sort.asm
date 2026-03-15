@@ -20,7 +20,7 @@ inner_loop:
     sub 
     brz end_inner_loop
 
-    ; load arr[pos] into temp 
+    ; temp = arr[pos]
     ldc pos
     ldnl 0
     ldc arr
@@ -30,7 +30,7 @@ inner_loop:
     ldc temp
     stnl 0      ; temp = arr[pos]
 
-    ; load arr[pos+1] 
+    ; A = arr[pos+1] 
     ldc pos
     ldnl 0
     ldc 1
@@ -39,16 +39,27 @@ inner_loop:
     add
     ldnl 0      ; A = arr[pos+1]
 
-    ;  compare 
+    ; compare 
     ldc temp
     ldnl 0      ; A = arr[pos], B = arr[pos+1]
-    sub         ; arr[pos] - arr[pos+1]
-    brlz skip_swap
+    sub         ; A = arr[pos+1] - arr[pos]
+    brlz swap
     brz skip_swap
 
+skip_swap:
+    ; pos++
+    ldc pos
+    ldnl 0
+    ldc 1
+    add         ; A = pos + 1
+    ldc pos     
+    stnl 0      ; pos = pos + 1
+
+    br inner_loop
+
 swap:
-    ;  write arr[pos+1] into arr[pos] 
-    ; calculate addr(arr[pos]) and save to ptr
+    ; ptr = addr(arr[pos])
+    ; arr[pos] = arr[pos+1]
     ldc pos
     ldnl 0
     ldc arr
@@ -57,7 +68,7 @@ swap:
     ldc ptr
     stnl 0      ; ptr = addr(arr[pos])
 
-    ; load arr[pos+1] back into A
+    ; A = arr[pos+1]
     ldc pos
     ldnl 0
     ldc 1
@@ -66,13 +77,13 @@ swap:
     add
     ldnl 0      ; A = arr[pos+1]
     
-    ; load pointer and store
+    ; arr[pos] = arr[pos+1]
     ldc ptr
     ldnl 0      ; A = addr(arr[pos]), B = arr[pos+1]
     stnl 0      ; arr[pos] = arr[pos+1]
 
-    ;  write temp (original arr[pos]) into arr[pos+1] 
-    ; calculate addr(arr[pos+1]) and save to ptr
+    ;  arr[pos+1] = temp
+    ; ptr = addr(arr[pos+1])
     ldc pos
     ldnl 0
     ldc 1
@@ -83,11 +94,11 @@ swap:
     ldc ptr
     stnl 0      ; ptr = addr(arr[pos+1])
 
-    ; load temp back into A
+    ; A = temp
     ldc temp
     ldnl 0      ; A = original arr[pos]
     
-    ; load pointer and store
+    ; arr[pos+1] = original arr[pos]
     ldc ptr
     ldnl 0      ; A = addr(arr[pos+1]), B = original arr[pos]
     stnl 0      ; arr[pos+1] = original arr[pos]
@@ -97,19 +108,8 @@ swap:
     ldc isSorted
     stnl 0
 
-skip_swap:
-    ;  increment pos 
-    ldc pos
-    ldnl 0
-    ldc 1
-    add         ; A = pos + 1
-    ldc pos     
-    stnl 0      ; pos = pos + 1
-
-    br inner_loop
-
 end_inner_loop:
-    ;  check if the pass was clean 
+    ;  check isSorted == 1 ? 
     ldc isSorted
     ldnl 0
     ldc 1

@@ -5,7 +5,7 @@ outer_loop:
 Label: 'outer_loop'
 Mnemonic: '(null)'
 Immediate: '(null)'
-    ; Initialize pos = 0 
+    ; pos = 0 
     ldc 0
 Label: ''
 Mnemonic: 'ldc'
@@ -19,7 +19,7 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
-    ; Initialize isSorted = 1 
+    ; isSorted = 1 
     ldc 1
 Label: ''
 Mnemonic: 'ldc'
@@ -37,7 +37,7 @@ inner_loop:
 Label: 'inner_loop'
 Mnemonic: '(null)'
 Immediate: '(null)'
-    ; Stop if pos == 4
+    ; stop if pos == 4
     ldc pos
 Label: ''
 Mnemonic: 'ldc'
@@ -59,7 +59,7 @@ Label: ''
 Mnemonic: 'brz'
 Immediate: 'end_inner_loop'
 
-    ; Load arr[pos] into temp 
+    ; temp = arr[pos]
     ldc pos
 Label: ''
 Mnemonic: 'ldc'
@@ -90,7 +90,7 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
-    ; Load arr[pos+1] 
+    ; A = arr[pos+1] 
     ldc pos
 Label: ''
 Mnemonic: 'ldc'
@@ -120,7 +120,7 @@ Label: ''
 Mnemonic: 'ldnl'
 Immediate: '0'
 
-    ;  Compare them 
+    ; compare 
     ldc temp
 Label: ''
 Mnemonic: 'ldc'
@@ -129,25 +129,60 @@ Immediate: 'temp'
 Label: ''
 Mnemonic: 'ldnl'
 Immediate: '0'
-    sub         ; arr[pos] - arr[pos+1]
+    sub         ; A = arr[pos+1] - arr[pos]
 Label: ''
 Mnemonic: 'sub'
 Immediate: '(null)'
-    brlz skip_swap
+    brlz swap
 Label: ''
 Mnemonic: 'brlz'
-Immediate: 'skip_swap'
+Immediate: 'swap'
     brz skip_swap
 Label: ''
 Mnemonic: 'brz'
 Immediate: 'skip_swap'
 
+skip_swap:
+Label: 'skip_swap'
+Mnemonic: '(null)'
+Immediate: '(null)'
+    ; pos++
+    ldc pos
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'pos'
+    ldnl 0
+Label: ''
+Mnemonic: 'ldnl'
+Immediate: '0'
+    ldc 1
+Label: ''
+Mnemonic: 'ldc'
+Immediate: '1'
+    add         ; A = pos + 1
+Label: ''
+Mnemonic: 'add'
+Immediate: '(null)'
+    ldc pos     
+Label: ''
+Mnemonic: 'ldc'
+Immediate: 'pos'
+    stnl 0      ; pos = pos + 1
+Label: ''
+Mnemonic: 'stnl'
+Immediate: '0'
+
+    br inner_loop
+Label: ''
+Mnemonic: 'br'
+Immediate: 'inner_loop'
+
 swap:
 Label: 'swap'
 Mnemonic: '(null)'
 Immediate: '(null)'
-    ;  Write arr[pos+1] into arr[pos] 
-    ; Calculate addr(arr[pos]) and save to ptr
+    ; ptr = addr(arr[pos])
+    ; arr[pos] = arr[pos+1]
     ldc pos
 Label: ''
 Mnemonic: 'ldc'
@@ -177,7 +212,7 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
-    ; Load arr[pos+1] back into A
+    ; A = arr[pos+1]
     ldc pos
 Label: ''
 Mnemonic: 'ldc'
@@ -210,7 +245,7 @@ Immediate: '0'
 Label: ''
 Mnemonic: '(null)'
 Immediate: '(null)'
-    ; Load our pointer and store!
+    ; arr[pos] = arr[pos+1]
     ldc ptr
 Label: ''
 Mnemonic: 'ldc'
@@ -224,8 +259,8 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
-    ;  Write temp (original arr[pos]) into arr[pos+1] 
-    ; Calculate addr(arr[pos+1]) and save to ptr
+    ;  arr[pos+1] = temp
+    ; ptr = addr(arr[pos+1])
     ldc pos
 Label: ''
 Mnemonic: 'ldc'
@@ -263,7 +298,7 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
-    ; Load temp back into A
+    ; A = temp
     ldc temp
 Label: ''
 Mnemonic: 'ldc'
@@ -276,7 +311,7 @@ Immediate: '0'
 Label: ''
 Mnemonic: '(null)'
 Immediate: '(null)'
-    ; Load our pointer and store!
+    ; arr[pos+1] = original arr[pos]
     ldc ptr
 Label: ''
 Mnemonic: 'ldc'
@@ -290,7 +325,7 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
-    ;  Mark isSorted = 0 (False) 
+    ;  isSorted = 0  
     ldc 0
 Label: ''
 Mnemonic: 'ldc'
@@ -304,46 +339,11 @@ Label: ''
 Mnemonic: 'stnl'
 Immediate: '0'
 
-skip_swap:
-Label: 'skip_swap'
-Mnemonic: '(null)'
-Immediate: '(null)'
-    ;  Increment pos 
-    ldc pos
-Label: ''
-Mnemonic: 'ldc'
-Immediate: 'pos'
-    ldnl 0
-Label: ''
-Mnemonic: 'ldnl'
-Immediate: '0'
-    ldc 1
-Label: ''
-Mnemonic: 'ldc'
-Immediate: '1'
-    add         ; A = pos + 1
-Label: ''
-Mnemonic: 'add'
-Immediate: '(null)'
-    ldc pos     
-Label: ''
-Mnemonic: 'ldc'
-Immediate: 'pos'
-    stnl 0      ; pos = pos + 1
-Label: ''
-Mnemonic: 'stnl'
-Immediate: '0'
-
-    br inner_loop
-Label: ''
-Mnemonic: 'br'
-Immediate: 'inner_loop'
-
 end_inner_loop:
 Label: 'end_inner_loop'
 Mnemonic: '(null)'
 Immediate: '(null)'
-    ;  Check if the pass was clean 
+    ;  check isSorted == 1 ? 
     ldc isSorted
 Label: ''
 Mnemonic: 'ldc'
@@ -360,12 +360,12 @@ Immediate: '1'
 Label: ''
 Mnemonic: 'sub'
 Immediate: '(null)'
-    brz end_sort ; If isSorted == 1, array is sorted!
+    brz end_sort ; if isSorted == 1, array is sorted
 Label: ''
 Mnemonic: 'brz'
 Immediate: 'end_sort'
 
-    ; Otherwise, run another pass
+    ; otherwise, run another pass
     br outer_loop
 Label: ''
 Mnemonic: 'br'
@@ -525,131 +525,131 @@ Lines:
 	Original line: ldnl 0      ; A = arr[pos], B = arr[pos+1]
 	PC: 26	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
 27. Line:
-	Original line: sub         ; arr[pos] - arr[pos+1]
+	Original line: sub         ; A = arr[pos+1] - arr[pos]
 	PC: 27	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
 28. Line:
-	Original line: brlz skip_swap
-	PC: 28	Defined Label: 	Mnemonic: 'brlz'	Operand Type: LABEL_REF	Op value: 0	Op Label: skip_swap
+	Original line: brlz swap
+	PC: 28	Defined Label: 	Mnemonic: 'brlz'	Operand Type: LABEL_REF	Op value: 0	Op Label: swap
 29. Line:
 	Original line: brz skip_swap
 	PC: 29	Defined Label: 	Mnemonic: 'brz'	Operand Type: LABEL_REF	Op value: 0	Op Label: skip_swap
 30. Line:
 	Original line: ldc pos
-	PC: 30	Defined Label: swap	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: pos
+	PC: 30	Defined Label: skip_swap	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: pos
 31. Line:
 	Original line: ldnl 0
 	PC: 31	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
 32. Line:
-	Original line: ldc arr
-	PC: 32	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: arr
+	Original line: ldc 1
+	PC: 32	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
 33. Line:
-	Original line: add         ; A = addr(arr[pos])
+	Original line: add         ; A = pos + 1
 	PC: 33	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
 34. Line:
-	Original line: ldc ptr
-	PC: 34	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: ptr
+	Original line: ldc pos
+	PC: 34	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: pos
 35. Line:
-	Original line: stnl 0      ; ptr = addr(arr[pos])
+	Original line: stnl 0      ; pos = pos + 1
 	PC: 35	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
 36. Line:
-	Original line: ldc pos
-	PC: 36	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: pos
+	Original line: br inner_loop
+	PC: 36	Defined Label: 	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: inner_loop
 37. Line:
-	Original line: ldnl 0
-	PC: 37	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+	Original line: ldc pos
+	PC: 37	Defined Label: swap	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: pos
 38. Line:
-	Original line: ldc 1
-	PC: 38	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+	Original line: ldnl 0
+	PC: 38	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
 39. Line:
-	Original line: add
-	PC: 39	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
-40. Line:
 	Original line: ldc arr
-	PC: 40	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: arr
+	PC: 39	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: arr
+40. Line:
+	Original line: add         ; A = addr(arr[pos])
+	PC: 40	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
 41. Line:
-	Original line: add
-	PC: 41	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
-42. Line:
-	Original line: ldnl 0      ; A = arr[pos+1]
-	PC: 42	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
-43. Line:
 	Original line: ldc ptr
-	PC: 43	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: ptr
+	PC: 41	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: ptr
+42. Line:
+	Original line: stnl 0      ; ptr = addr(arr[pos])
+	PC: 42	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+43. Line:
+	Original line: ldc pos
+	PC: 43	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: pos
 44. Line:
-	Original line: ldnl 0      ; A = addr(arr[pos]), B = arr[pos+1]
+	Original line: ldnl 0
 	PC: 44	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
 45. Line:
-	Original line: stnl 0      ; arr[pos] = arr[pos+1]
-	PC: 45	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+	Original line: ldc 1
+	PC: 45	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
 46. Line:
-	Original line: ldc pos
-	PC: 46	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: pos
-47. Line:
-	Original line: ldnl 0
-	PC: 47	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
-48. Line:
-	Original line: ldc 1
-	PC: 48	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
-49. Line:
 	Original line: add
-	PC: 49	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
-50. Line:
+	PC: 46	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+47. Line:
 	Original line: ldc arr
-	PC: 50	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: arr
+	PC: 47	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: arr
+48. Line:
+	Original line: add
+	PC: 48	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+49. Line:
+	Original line: ldnl 0      ; A = arr[pos+1]
+	PC: 49	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+50. Line:
+	Original line: ldc ptr
+	PC: 50	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: ptr
 51. Line:
-	Original line: add         ; A = addr(arr[pos+1])
-	PC: 51	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+	Original line: ldnl 0      ; A = addr(arr[pos]), B = arr[pos+1]
+	PC: 51	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
 52. Line:
-	Original line: ldc ptr
-	PC: 52	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: ptr
+	Original line: stnl 0      ; arr[pos] = arr[pos+1]
+	PC: 52	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
 53. Line:
-	Original line: stnl 0      ; ptr = addr(arr[pos+1])
-	PC: 53	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+	Original line: ldc pos
+	PC: 53	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: pos
 54. Line:
-	Original line: ldc temp
-	PC: 54	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: temp
-55. Line:
-	Original line: ldnl 0      ; A = original arr[pos]
-	PC: 55	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
-56. Line:
-	Original line: ldc ptr
-	PC: 56	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: ptr
-57. Line:
-	Original line: ldnl 0      ; A = addr(arr[pos+1]), B = original arr[pos]
-	PC: 57	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
-58. Line:
-	Original line: stnl 0      ; arr[pos+1] = original arr[pos]
-	PC: 58	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
-59. Line:
-	Original line: ldc 0
-	PC: 59	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 0	Op Label: 
-60. Line:
-	Original line: ldc isSorted
-	PC: 60	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: isSorted
-61. Line:
-	Original line: stnl 0
-	PC: 61	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
-62. Line:
-	Original line: ldc pos
-	PC: 62	Defined Label: skip_swap	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: pos
-63. Line:
 	Original line: ldnl 0
-	PC: 63	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
-64. Line:
+	PC: 54	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+55. Line:
 	Original line: ldc 1
-	PC: 64	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+	PC: 55	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 1	Op Label: 
+56. Line:
+	Original line: add
+	PC: 56	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+57. Line:
+	Original line: ldc arr
+	PC: 57	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: arr
+58. Line:
+	Original line: add         ; A = addr(arr[pos+1])
+	PC: 58	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+59. Line:
+	Original line: ldc ptr
+	PC: 59	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: ptr
+60. Line:
+	Original line: stnl 0      ; ptr = addr(arr[pos+1])
+	PC: 60	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+61. Line:
+	Original line: ldc temp
+	PC: 61	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: temp
+62. Line:
+	Original line: ldnl 0      ; A = original arr[pos]
+	PC: 62	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+63. Line:
+	Original line: ldc ptr
+	PC: 63	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: ptr
+64. Line:
+	Original line: ldnl 0      ; A = addr(arr[pos+1]), B = original arr[pos]
+	PC: 64	Defined Label: 	Mnemonic: 'ldnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
 65. Line:
-	Original line: add         ; A = pos + 1
-	PC: 65	Defined Label: 	Mnemonic: 'add'	Operand Type: NONE	Op value: 0	Op Label: 
+	Original line: stnl 0      ; arr[pos+1] = original arr[pos]
+	PC: 65	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
 66. Line:
-	Original line: ldc pos
-	PC: 66	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: pos
+	Original line: ldc 0
+	PC: 66	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 0	Op Label: 
 67. Line:
-	Original line: stnl 0      ; pos = pos + 1
-	PC: 67	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
+	Original line: ldc isSorted
+	PC: 67	Defined Label: 	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: isSorted
 68. Line:
-	Original line: br inner_loop
-	PC: 68	Defined Label: 	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: inner_loop
+	Original line: stnl 0
+	PC: 68	Defined Label: 	Mnemonic: 'stnl'	Operand Type: NUMBER	Op value: 0	Op Label: 
 69. Line:
 	Original line: ldc isSorted
 	PC: 69	Defined Label: end_inner_loop	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: isSorted
@@ -663,11 +663,10 @@ Lines:
 	Original line: sub
 	PC: 72	Defined Label: 	Mnemonic: 'sub'	Operand Type: NONE	Op value: 0	Op Label: 
 73. Line:
-	Original line: brz end_sort ; If isSorted == 1, array is sorted!
+	Original line: brz end_sort ; if isSorted == 1, array is sorted
 	PC: 73	Defined Label: 	Mnemonic: 'brz'	Operand Type: LABEL_REF	Op value: 0	Op Label: end_sort
 74. Line:
-	Original lWARNING: Unused symbol swap
-ine: br outer_loop
+	Original line: br outer_loop
 	PC: 74	Defined Label: 	Mnemonic: 'br'	Operand Type: LABEL_REF	Op value: 0	Op Label: outer_loop
 75. Line:
 	Original line: HALT
@@ -705,9 +704,9 @@ Symbols:
 1. Symbol:
 	Name: inner_loop	Address: 6
 2. Symbol:
-	Name: swap	Address: 30
+	Name: skip_swap	Address: 30
 3. Symbol:
-	Name: skip_swap	Address: 62
+	Name: swap	Address: 37
 4. Symbol:
 	Name: end_inner_loop	Address: 69
 5. Symbol:

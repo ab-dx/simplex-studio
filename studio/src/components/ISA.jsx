@@ -13,7 +13,7 @@ export default function ISA() {
 		{ op: 7, mnem: "sub", desc: "A = B - A" },
 		{ op: 8, mnem: "shl", desc: "A = B << A" },
 		{ op: 9, mnem: "shr", desc: "A = B >> A" },
-		{ op: 10, mnem: "adj", desc: "SP = SP - value" },
+		{ op: 10, mnem: "adj", desc: "SP = SP + value" },
 		{ op: 11, mnem: "a2sp", desc: "SP = A; A = B" },
 		{ op: 12, mnem: "sp2a", desc: "B = A; A = SP" },
 		{ op: 13, mnem: "call", desc: "B = A; A = PC; PC = PC + offset + 1" },
