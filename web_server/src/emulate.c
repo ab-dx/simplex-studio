@@ -17,14 +17,16 @@ void emulate_request(char *machine_code, int content_length, int socket) {
 
   if (pid == 0) {
     // CHILD PROCESS
+    // Duplicate the pipe file descriptor to serve as stdin, stdout, stderr for
+    // this process
     dup2(server_to_emu[0], STDIN_FILENO);
     dup2(emu_to_server[1], STDOUT_FILENO);
-    // dup2(emu_to_server[1], STDERR_FILENO);
+    // Close pipes after assigning std streams
     close(server_to_emu[0]);
     close(server_to_emu[1]);
     close(emu_to_server[0]);
     close(emu_to_server[1]);
-
+    // Transform the child process into assembler process
     execl("../assembler/build/target/emu", "../assembler/build/target/emu",
           "-j", NULL);
     perror("execl failed");
@@ -35,7 +37,6 @@ void emulate_request(char *machine_code, int content_length, int socket) {
     close(emu_to_server[1]);
 
     // Send code and close write pipe so emulator can finish
-    // write(server_to_emu[1], machine_code, content_length);
     int written = write(server_to_emu[1], machine_code, content_length);
     printf("Bytes written to emulator: %d\n", written);
     close(server_to_emu[1]);
@@ -45,11 +46,8 @@ void emulate_request(char *machine_code, int content_length, int socket) {
     char buffer[5000 * 1024] = {0}; // 5000 kb buffer for response
     int count = 0;
     int bytes_read;
-    while (count < sizeof(buffer) - 1) { // Don't read more than buffer size
-      bytes_read =
-          read(emu_to_server[0], buffer + count, sizeof(buffer) - 1 - count);
-      if (bytes_read <= 0)
-        break;
+    // Safely read 1 byte at a time
+    while ((bytes_read = read(emu_to_server[0], buffer + count, 1)) > 0) {
       count += bytes_read;
       if (count >= sizeof(buffer) - 1) {
         printf("WARNING: Emulator output exceeded buffer limit. Terminating "

@@ -6,30 +6,34 @@
 #include "../include/server.h"
 
 int main() {
+  // Initialise server file descriptor to use TCP socket
   int server_fd = socket(AF_INET, SOCK_STREAM, 0);
 
   struct sockaddr_in address;
   address.sin_family = AF_INET;
   address.sin_addr.s_addr = INADDR_ANY;
-  address.sin_port = htons(8080);
+  address.sin_port = htons(8080); // Use port 8080
 
+  // Bind the file descriptor socket to the port
   if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
     perror("bind failed");
     return 1;
   }
 
+  // Begin listening for connections, atmost 3 concurrent here
   listen(server_fd, 3);
 
   while (1) {
+    // Accept connections in loop
     int addrlen = sizeof(address);
     int new_socket =
         accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
 
-    char payload[10 * 1024] = {0};
+    char payload[10 * 1024] = {0}; // expected max 10 kb payload from client
     read(new_socket, payload, sizeof(payload) - 1);
     printf("--- RECEIVED FROM CLIENT ---\n%s\n----------------------------\n",
            payload);
-    // Extract the code
+    // Extract the verb and route for router
     char *payload_copy = malloc(sizeof(payload));
     strcpy(payload_copy, payload);
     char *verb = strtok(payload_copy, " \t\n");
@@ -39,6 +43,7 @@ int main() {
     printf("HTTP Route: %s\n", route);
 
     handle_route(new_socket, verb, route, payload);
+    free(payload_copy);
   }
 
   return 0;

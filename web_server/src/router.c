@@ -12,7 +12,9 @@ void handle_route(int socket, char *verb, char *route, char *payload) {
 
       printf("POST /assemble\nPayload: %s\n", payload);
 
-      char *separator = strstr(payload, "\r\n\r\n");
+      char *separator =
+          strstr(payload, "\r\n\r\n"); // Extract assembly code, starts in
+                                       // payload after \r\n\r\n
       char *assembly_code = (separator != NULL) ? separator + 4 : "HALT\n";
       printf("Attempting to compile:\n'%s'\n", assembly_code);
 
@@ -22,8 +24,8 @@ void handle_route(int socket, char *verb, char *route, char *payload) {
 
       printf("POST /emulate\nPayload: %s\n", payload);
 
-      // Well-defined context length needed, otherwise stream terminates at
-      // misinterpreted NULL bytes
+      // Content length from header needed as strlen will not work for number of
+      // machine code bytes
 
       int content_length = 0;
       char *cl_header = strstr(payload, "Content-Length: ");

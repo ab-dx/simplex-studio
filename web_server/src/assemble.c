@@ -19,15 +19,18 @@ void assemble_request(char *assembly_code, int socket) {
 
   if (pid == 0) {
     // CHILD PROCESS
+    // Duplicate the pipe file descriptor to serve as stdin, stdout, stderr for this process
     dup2(server_to_asm[0], STDIN_FILENO);
     dup2(asm_to_server[1], STDOUT_FILENO);
     dup2(asm_to_server_err[1], STDERR_FILENO);
+    // Close pipes after assigning std streams
     close(server_to_asm[0]);
     close(server_to_asm[1]);
     close(asm_to_server[0]);
     close(asm_to_server[1]);
     close(asm_to_server_err[0]);
     close(asm_to_server_err[1]);
+    // Transform the child process into assembler process
     execl("../assembler/build/target/asm", "../assembler/build/target/asm",
           "-i", NULL);
     perror("execl failed");
@@ -38,17 +41,17 @@ void assemble_request(char *assembly_code, int socket) {
     close(asm_to_server[1]);
 
     // Send code and close write pipe so assembler can finish
-    // write(server_to_asm[1], assembly_code, strlen(assembly_code));
     int written = write(server_to_asm[1], assembly_code, strlen(assembly_code));
     printf("Bytes written to assembler: %d\n", written);
     close(server_to_asm[1]);
     close(server_to_asm[1]);
     close(asm_to_server_err[1]);
 
-    // Read the binary response
+    // Read the binary response from pipe
     char buffer[500 * 1024] = {0}; // 500kb buffer for program
     int count = 0;
     int bytes_read;
+    // Safely read 4 bytes at a time, quit if overflow
     while ((bytes_read = read(asm_to_server[0], buffer + count, 4)) > 0) {
       count += bytes_read;
       if (count >= sizeof(buffer) - 1) {
@@ -62,7 +65,7 @@ void assemble_request(char *assembly_code, int socket) {
     close(asm_to_server[0]); // Clean up read pipe
 
     // Check for errors
-    char err_buffer[1024] = {0}; // 500kb buffer for program
+    char err_buffer[1024] = {0}; // Buffer for stderr output
     int err_count = 0;
     int err_bytes_read;
     while ((err_bytes_read =
@@ -75,11 +78,11 @@ void assemble_request(char *assembly_code, int socket) {
         break;
       }
     }
-    close(asm_to_server_err[0]); // Clean up read pipe
+    close(asm_to_server_err[0]); // Clean up err read pipe
 
     printf("ERROR BUFFER: %s", err_buffer);
 
-    if (err_buffer[0] != 0) {
+    if (strncmp(err_buffer,"ERROR",5)==0) {
       // Format and send HTTP response
       char error[1040];
       sprintf(error, "{\"error\": \"%s\"}", err_buffer);
