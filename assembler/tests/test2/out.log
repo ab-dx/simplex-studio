@@ -12,6 +12,7 @@ ERROR: Unknown Instruction: 0def
 WARNING: Unused symbol label
 WARNING: Unused symbol 0def
 WARNING: Unused symbol label
+WARNING: HALT not found
 Errors found, avoid using outputs
 ; test2.asm
 ; Test error handling
