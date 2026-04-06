@@ -1,9 +1,9 @@
 # Simplex Studio
 
 This project contains 3 main components at its core:
-- Assembler + Emulator written in C99 (As required by the mini project)
-- A POSIX-Compliant Web Server written in POSIX C to expose the functionality of the binaries over a REST API (an additional component)
-- A React Web App written in JavaScript for interacting with the Web Server to better visualize traces (an additional component)
+- Assembler + Emulator written in C99 
+- A POSIX-Compliant Web Server written in POSIX C to expose the functionality of the binaries over a REST API 
+- A React Web App written in JavaScript for interacting with the Web Server to better visualize traces 
 
 ![UI](./assets/ui.png)
 ![Architecture](./assets/architecture.png)
@@ -30,30 +30,30 @@ This project contains 3 main components at its core:
     - Makefile for automating the build and testing processes
 
 - To build the project, run (from the root of assembler/ where the Makefile is present)
-      make asm emu
+      ```make asm emu```
   This will build the asm and emu binaries in build/target/asm and build/target/emu
 
 - To automatically run the tests in tests/, run (from the root of assembler/ where the Makefile is present)
-      make test
+      ```make test```
   This will assemble the asm files present in each folder in tests/ and generate the corresponding .obj, .lst and .log files in their respective folders
 
 ### Assembler
   - The assembler is capable of running in 2 modes: standard mode and i/o mode
   - Standard Mode:
-        - Expected to be run as: ./asm input.asm output.obj output.lst
-        (or rather ./build/target/asm input.asm output.obj output.lst)
+        - Expected to be run as: ```./asm input.asm output.obj output.lst```
+        (or rather ``./build/target/asm input.asm output.obj output.lst``)
         - This assembles the input.asm file and creates the output.obj file (binary machine code) and output.lst file (listing file with memory dump)
         - It also writes intermediate representations and errors/warnings to stdout and stderr (can be redirected to a .log file as done in the Makefile)
         - All the tests in tests/ have been processed through Standard Mode, and the corresponding outputs are in the respective folders
         - The assigned example programs are assembled as expected
         - To redirect logs to a log file:
-                ./build/target/asm input.asm output.obj output.lst > out.log 2>&1
+                ```./build/target/asm input.asm output.obj output.lst > out.log 2>&1```
   - I/O mode:
-        - Expected to be run as : <some_program> | ./asm -i | <some_other_program>
-        (or rather <some_program> | ./build/target/asm -i | <some_other_program>)
-        E.g: echo "ldc 5 \n HALT" | ./asm -i | xxd
+        - Expected to be run as : ```<some_program> | ./asm -i | <some_other_program>```
+        (or rather ``<some_program> | ./build/target/asm -i | <some_other_program>``)
+        E.g: ``echo "ldc 5 \n HALT" | ./asm -i | xxd``
         - This mode reads the program to be assembled from stdin and writes the assembled binary to stdout
-        - For e.g, here <some_program> can write assembly code to its stdout, which is read from asm's stdin, once assembled, the machine code bytes are sent to stdout, read by <some_other_program>'s stdin
+        - For e.g, here ``<some_program>`` can write assembly code to its stdout, which is read from asm's stdin, once assembled, the machine code bytes are sent to stdout, read by ``<some_other_program>``'s stdin
         - This was implemented to be used by the POSIX Web Server (other component) as 
               1. It can directly assemble programs in memory without requiring any writes to disk
               2. Redirection from stdin and stdout streams makes it easier to work with POSIX Pipes so that the web server process can communicate with the assembler process (for the sake of IPC)
@@ -75,16 +75,16 @@ This project contains 3 main components at its core:
 ### Emulator
   - The emulator is capable of running in 2 modes: standard/regular mode and json mode
   - Standard Mode:
-        - Expected to be run as: ./emu output.obj
-        (or rather ./build/target/emu output.obj)
+        - Expected to be run as: ```./emu output.obj```
+        (or rather ``./build/target/emu output.obj``)
         - This emulates the SIMPLEX machine code in output.obj and writes the step by step state of registers PC,SP,A,B, along with the operand and opcode of each instruction to stdout
         -
   - JSON Mode:
-        - Expected to be run as : <some_program> | ./emu -j | <some_other_program>
-        (or rather <some_program> | ./build/target/emu -j | <some_other_program>)
-        E.g: cat output.obj | ./emu -j
+        - Expected to be run as : ```<some_program> | ./emu -j | <some_other_program>```
+        (or rather ``<some_program> | ./build/target/emu -j | <some_other_program>``)
+        E.g: ``cat output.obj | ./emu -j``
         - This mode reads the binary to be emulated from stdin and writes the step by step register state and trace as a json string to stdout
-        - For e.g, here <some_program> can write SIMPLEX ISA binary instructions to its stdout, which is read from emu's stdin, once emulated, the json string is sent to stdout, read by <some_other_program>'s stdin
+        - For e.g, here ``<some_program>`` can write SIMPLEX ISA binary instructions to its stdout, which is read from emu's stdin, once emulated, the json string is sent to stdout, read by ``<some_other_program>``'s stdin
         - This was implemented to be used by the POSIX Web Server (other component) as 
               1. It can directly emulate programs in memory without requiring any writes to disk
               2. Redirection from stdin and stdout streams makes it easier to work with POSIX Pipes so that the web server process can communicate with the emulator process (for the sake of IPC)
@@ -113,14 +113,14 @@ This project contains 3 main components at its core:
       make server 
   This will build the server binary in build/target/server
 - The server can be started by running:
-      ./server
-      (or rather ./build/target/server)
+      ``./server``
+      (or rather ``./build/target/server``)
 - The server requires to be run in a POSIX-Compliant environment, such as on a Linux Distribtion (Bare metal, Docker environment or WSL), BSD or any other POSIX Compliant Operating System (Windows doesn't adhere by default)
 - This is required as the server makes use of POSIX sockets, POSIX pipes and certain syscalls only available on these standards
 - A Dockerfile is provided at the root of the project for running in a non-POSIX compliant environment with Docker available (uses an Ubuntu base)
 - For running through Docker:
-      docker build . -t simplex-server
-      docker run -p 8080:8080 -it simplex-server
+      ```docker build . -t simplex-server
+      docker run -p 8080:8080 -it simplex-server```
 - Capabilities:
         - The server initialises a TCP server via sockets and binds it to port 8080
         - It accepts TCP packets and stores it into a constant size buffer of 10kb in memory
@@ -158,9 +158,9 @@ This project contains 3 main components at its core:
     - tailwind.config.js : (generated) tailwind css configuration
     - vite.config.js : (generate) vite configured to build react apps
 - Install dependencies using: (at the root of studio/)
-      npm install
+      ``` npm install ```
 - The web app can be run in Dev mode using: (at the root of studio/)
-      npm run dev
+      ``` npm run dev ```
 - Capabilities:
         - The web app is accessible on http://localhost:5173 . It assumes that the web server is up and running on http://localhost:8080
         - The app features a code editor where SIMPLEX assembly can be written 
