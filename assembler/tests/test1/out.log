@@ -1,12 +1,13 @@
+WARNING: Unused symbol label
 ; test1.asm
 label: ; an unused label
 Label: 'label'
 Mnemonic: '(null)'
 Immediate: '(null)'
-ldc label
+ldc 0
 Label: ''
 Mnemonic: 'ldc'
-Immediate: 'label'
+Immediate: '0'
 ldc -5
 Label: ''
 Mnemonic: 'ldc'
@@ -49,8 +50,8 @@ AssemblerContext:
 	Line count: 9
 Lines:
 0. Line:
-	Original line: ldc label
-	PC: 0	Defined Label: label	Mnemonic: 'ldc'	Operand Type: LABEL_REF	Op value: 0	Op Label: label
+	Original line: ldc 0
+	PC: 0	Defined Label: label	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: 0	Op Label: 
 1. Line:
 	Original line: ldc -5
 	PC: 1	Defined Label: 	Mnemonic: 'ldc'	Operand Type: NUMBER	Op value: -5	Op Label: 
