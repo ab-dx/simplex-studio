@@ -40,59 +40,59 @@ This project contains 3 main components at its core:
 ### Assembler
   - The assembler is capable of running in 2 modes: standard mode and i/o mode
   - Standard Mode:
-        - Expected to be run as: ```./asm input.asm output.obj output.lst```
+      - Expected to be run as: ```./asm input.asm output.obj output.lst```
         (or rather ``./build/target/asm input.asm output.obj output.lst``)
-        - This assembles the input.asm file and creates the output.obj file (binary machine code) and output.lst file (listing file with memory dump)
-        - It also writes intermediate representations and errors/warnings to stdout and stderr (can be redirected to a .log file as done in the Makefile)
-        - All the tests in tests/ have been processed through Standard Mode, and the corresponding outputs are in the respective folders
-        - The assigned example programs are assembled as expected
-        - To redirect logs to a log file:
-                ```./build/target/asm input.asm output.obj output.lst > out.log 2>&1```
+      - This assembles the input.asm file and creates the output.obj file (binary machine code) and output.lst file (listing file with memory dump)
+      - It also writes intermediate representations and errors/warnings to stdout and stderr (can be redirected to a .log file as done in the Makefile)
+      - All the tests in tests/ have been processed through Standard Mode, and the corresponding outputs are in the respective folders
+      - The assigned example programs are assembled as expected
+      - To redirect logs to a log file:
+              ```./build/target/asm input.asm output.obj output.lst > out.log 2>&1```
   - I/O mode:
-        - Expected to be run as : ```<some_program> | ./asm -i | <some_other_program>```
-        (or rather ``<some_program> | ./build/target/asm -i | <some_other_program>``)
-        E.g: ``echo "ldc 5 \n HALT" | ./asm -i | xxd``
-        - This mode reads the program to be assembled from stdin and writes the assembled binary to stdout
-        - For e.g, here ``<some_program>`` can write assembly code to its stdout, which is read from asm's stdin, once assembled, the machine code bytes are sent to stdout, read by ``<some_other_program>``'s stdin
-        - This was implemented to be used by the POSIX Web Server (other component) as 
-              1. It can directly assemble programs in memory without requiring any writes to disk
-              2. Redirection from stdin and stdout streams makes it easier to work with POSIX Pipes so that the web server process can communicate with the assembler process (for the sake of IPC)
+      - Expected to be run as : ```<some_program> | ./asm -i | <some_other_program>```
+      (or rather ``<some_program> | ./build/target/asm -i | <some_other_program>``)
+      E.g: ``echo "ldc 5 \n HALT" | ./asm -i | xxd``
+      - This mode reads the program to be assembled from stdin and writes the assembled binary to stdout
+      - For e.g, here ``<some_program>`` can write assembly code to its stdout, which is read from asm's stdin, once assembled, the machine code bytes are sent to stdout, read by ``<some_other_program>``'s stdin
+      - This was implemented to be used by the POSIX Web Server (other component) as 
+            1. It can directly assemble programs in memory without requiring any writes to disk
+            2. Redirection from stdin and stdout streams makes it easier to work with POSIX Pipes so that the web server process can communicate with the assembler process (for the sake of IPC)
   - Capabilities:
-        - Every instruction and pseudo-instruction is compatible with the assembler (including HALT, SET and data)
-        - The listing file shows the bytes produced for each instruction and that instruction's mnemonic at no extra I/O cost
-        - The first pass reads every line of the assembly code, cleans comments, saves symbols/labels to a symbol table, and recognizes mnemonics and operands, building a complete internal representation of the code (thus, not requiring any I/O with the input file in the second pass)
-        - The second pass uses this internal representation to correctly assign addresses to labels, and correctly translates mnemonics and appropriate opcodes into machine code and a listing file
-        - The assembler issues warnings for unused labels, missing HALT and errors for:
-            - Invalid Label Name
-            - Illegal Immediate
-            - Extra on end of line
-            - Duplicate label
-            - Unknown Instruction
-            - Unexpected operand
-            - Expected an operand
-            - Symbol not found
+      - Every instruction and pseudo-instruction is compatible with the assembler (including HALT, SET and data)
+      - The listing file shows the bytes produced for each instruction and that instruction's mnemonic at no extra I/O cost
+      - The first pass reads every line of the assembly code, cleans comments, saves symbols/labels to a symbol table, and recognizes mnemonics and operands, building a complete internal representation of the code (thus, not requiring any I/O with the input file in the second pass)
+      - The second pass uses this internal representation to correctly assign addresses to labels, and correctly translates mnemonics and appropriate opcodes into machine code and a listing file
+      - The assembler issues warnings for unused labels, missing HALT and errors for:
+          - Invalid Label Name
+          - Illegal Immediate
+          - Extra on end of line
+          - Duplicate label
+          - Unknown Instruction
+          - Unexpected operand
+          - Expected an operand
+          - Symbol not found
 
 ### Emulator
   - The emulator is capable of running in 2 modes: standard/regular mode and json mode
   - Standard Mode:
-        - Expected to be run as: ```./emu output.obj```
-        (or rather ``./build/target/emu output.obj``)
-        - This emulates the SIMPLEX machine code in output.obj and writes the step by step state of registers PC,SP,A,B, along with the operand and opcode of each instruction to stdout
-        -
+      - Expected to be run as: ```./emu output.obj```
+      (or rather ``./build/target/emu output.obj``)
+      - This emulates the SIMPLEX machine code in output.obj and writes the step by step state of registers PC,SP,A,B, along with the operand and opcode of each instruction to stdout
+      -
   - JSON Mode:
-        - Expected to be run as : ```<some_program> | ./emu -j | <some_other_program>```
-        (or rather ``<some_program> | ./build/target/emu -j | <some_other_program>``)
-        E.g: ``cat output.obj | ./emu -j``
-        - This mode reads the binary to be emulated from stdin and writes the step by step register state and trace as a json string to stdout
-        - For e.g, here ``<some_program>`` can write SIMPLEX ISA binary instructions to its stdout, which is read from emu's stdin, once emulated, the json string is sent to stdout, read by ``<some_other_program>``'s stdin
-        - This was implemented to be used by the POSIX Web Server (other component) as 
-              1. It can directly emulate programs in memory without requiring any writes to disk
-              2. Redirection from stdin and stdout streams makes it easier to work with POSIX Pipes so that the web server process can communicate with the emulator process (for the sake of IPC)
+      - Expected to be run as : ```<some_program> | ./emu -j | <some_other_program>```
+      (or rather ``<some_program> | ./build/target/emu -j | <some_other_program>``)
+      E.g: ``cat output.obj | ./emu -j``
+      - This mode reads the binary to be emulated from stdin and writes the step by step register state and trace as a json string to stdout
+      - For e.g, here ``<some_program>`` can write SIMPLEX ISA binary instructions to its stdout, which is read from emu's stdin, once emulated, the json string is sent to stdout, read by ``<some_other_program>``'s stdin
+      - This was implemented to be used by the POSIX Web Server (other component) as 
+            1. It can directly emulate programs in memory without requiring any writes to disk
+            2. Redirection from stdin and stdout streams makes it easier to work with POSIX Pipes so that the web server process can communicate with the emulator process (for the sake of IPC)
   - Capabilities:
-        - Capable of emulating all 18 instructions of the SIMPLEX ISA
-        - Issues errors for invalid opcodes and potential infinite loops
-        - A program is assumed to have run into an infinite loop if it executes over a very large number of CPU cycles (here, 100,000)
-        - Step by step register state and final memory trace is sufficient to track "trace, read, write, before, after" as present in the original emu
+      - Capable of emulating all 18 instructions of the SIMPLEX ISA
+      - Issues errors for invalid opcodes and potential infinite loops
+      - A program is assumed to have run into an infinite loop if it executes over a very large number of CPU cycles (here, 100,000)
+      - Step by step register state and final memory trace is sufficient to track "trace, read, write, before, after" as present in the original emu
 
 ## POSIX-Compliant Web Server in C
 
@@ -122,16 +122,16 @@ This project contains 3 main components at its core:
       ```docker build . -t simplex-server
       docker run -p 8080:8080 -it simplex-server```
 - Capabilities:
-        - The server initialises a TCP server via sockets and binds it to port 8080
-        - It accepts TCP packets and stores it into a constant size buffer of 10kb in memory
-        - This buffer is parsed to extract the HTTP Verb and HTTP Route for the given request
-        - POST and OPTIONS verbs are supported and the verb+route is handled accordingly by the router
-        - Available routes are POST /assemble and POST /emulate, and their corresponding OPTIONS routes to accept foreign requests
-        - For running the asm or emu binaries in the server, the fork syscall is used to fork the current process and transform the child process into one running the appropriate binary via the execl syscall
-        - Appropriate read and write pipes are setup with the child process for the stdin, stdout and stderr streams
-        - Requests parsed by the server are sent to the asm and emu binary's stdin. The binary's stdout is read from the parent process via a pipe.
-        - Depending on the state of execution of the child process (successful or with errors), an HTTP 200 OK or HTTP 400 Bad Request is generated
-        - The corresponding HTTP payload is sent back to the caller via the socket, along with either the assembled machine code, emulator trace or error
+    - The server initialises a TCP server via sockets and binds it to port 8080
+    - It accepts TCP packets and stores it into a constant size buffer of 10kb in memory
+    - This buffer is parsed to extract the HTTP Verb and HTTP Route for the given request
+    - POST and OPTIONS verbs are supported and the verb+route is handled accordingly by the router
+    - Available routes are POST /assemble and POST /emulate, and their corresponding OPTIONS routes to accept foreign requests
+    - For running the asm or emu binaries in the server, the fork syscall is used to fork the current process and transform the child process into one running the appropriate binary via the execl syscall
+    - Appropriate read and write pipes are setup with the child process for the stdin, stdout and stderr streams
+    - Requests parsed by the server are sent to the asm and emu binary's stdin. The binary's stdout is read from the parent process via a pipe.
+    - Depending on the state of execution of the child process (successful or with errors), an HTTP 200 OK or HTTP 400 Bad Request is generated
+    - The corresponding HTTP payload is sent back to the caller via the socket, along with either the assembled machine code, emulator trace or error
 
 ## React Web App
 
