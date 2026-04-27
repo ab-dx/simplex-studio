@@ -162,8 +162,8 @@ This project contains 3 main components at its core:
 - The web app can be run in Dev mode using: (at the root of studio/)
       ``` npm run dev ```
 - Capabilities:
-        - The web app is accessible on http://localhost:5173 . It assumes that the web server is up and running on http://localhost:8080
-        - The app features a code editor where SIMPLEX assembly can be written 
-        - This code can be assembled, which internally calls POST /assemble
-        - The machine code received can be emulated, which internally calls POST /emulate
-        - Register state can be observed step by step and final memory addresses can be inspected
+    - The web app is accessible on http://localhost:5173 . It assumes that the web server is up and running on http://localhost:8080
+    - The app features a code editor where SIMPLEX assembly can be written 
+    - This code can be assembled, which internally calls POST /assemble
+    - The machine code received can be emulated, which internally calls POST /emulate
+    - Register state can be observed step by step and final memory addresses can be inspected
